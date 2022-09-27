@@ -77,6 +77,11 @@ class SuiWalletController extends GetxController {
       currentWalletBalance.value = acc;
     }
   }
+
+  getTransactionsForAddress() async {
+    currentWallet?._suiApi
+        ?.getTransactionsForAddress(currentWalletAddress.string);
+  }
 }
 
 class SuiWallet {
