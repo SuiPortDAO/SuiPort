@@ -2,7 +2,7 @@ import 'package:wallet/api/api_service.dart';
 import 'package:wallet/api/get_txn_digests_response.dart';
 import 'package:wallet/api/sui_object_info_response.dart';
 import 'package:wallet/api/sui_request.dart';
-import 'package:wallet/api/sui_transaction_response.dart';
+import 'package:wallet/utils/json.dart';
 
 import 'get_object_data_response.dart';
 
@@ -28,8 +28,8 @@ class SuiApi {
         .toList();
   }
 
-  getTransactionsForAddress(address) async {
-    final tansactions = [];
+  Future<List<SuiTansaction>> getTransactionsForAddress(address) async {
+    final List<SuiTansaction> tansactions = [];
     final List<String> digests = [];
     final List<num> seq = [];
 
@@ -50,30 +50,94 @@ class SuiApi {
                     SuiRequest(method: 'sui_getTransaction', params: [digest]))
                 .toList()))
         .data
-        .forEach((e) {
-      final txEff = SuiTransactionResponse.fromJson(e).result;
-      final res = txEff?.certificate;
-      final txns = res?.data?.transactions;
-      if (txns?.isNotEmpty == true) {
-        final txn = txns?[0];
-        final txKind = 'TransferSui';
-        final gasSummary = txEff?.effects?.gasUsed;
-        final txGas = gasSummary?.computationCost ??
-            0 +
-                (gasSummary?.storageCost ?? 0) -
-                (gasSummary?.storageRebate ?? 0);
-        tansactions.add({
-          'status': txEff?.effects?.status,
-          'txGas': txGas,
-          'kind': txKind,
-          'from': res?.data?.sender,
-          // 'error': txEff?.effects?.status?.error
-          'timestampMs': txEff?.timestampMs,
-          'isSender': false
-        });
+        .forEach((json) {
+      // flat
+      // how to performance
+      // TODO
+      // filter
+      final gasSummary = JSON.resolve(
+          json: json, path: 'result.effects.gasUsed', defaultValue: {});
+      final from = JSON.resolve(
+          json: json, path: 'result.certificate.data.sender', defaultValue: '');
+      final error = JSON.resolve(
+          json: json, path: 'result.effects.status.error', defaultValue: '');
+      final status = JSON.resolve(
+          json: json, path: 'result.effects.status.status', defaultValue: '');
+      final timestampMs = JSON.resolve(
+          json: json, path: 'result.timestamp_ms', defaultValue: 0);
+      final txGas = (gasSummary['computationCost'] ?? 0) +
+          (gasSummary['storageCost'] ?? 0) -
+          (gasSummary['storageRebate'] ?? 0);
+
+      final transactionDigest = JSON.resolve(
+          json: json,
+          path: 'result.certificate.transactionDigest',
+          defaultValue: '');
+
+      final txn = JSON.resolve(
+          json: json,
+          path: 'result.certificate.data.transactions.0',
+          defaultValue: {});
+
+      var txKind = '';
+      var amount = 0;
+      var recipient = '';
+      if (txn.keys.first is String) {
+        txKind = txn.keys.first;
+        amount = JSON.resolve(
+            json: json,
+            path: 'result.certificate.data.transactions.0.$txKind.amount',
+            defaultValue: 0);
+
+        recipient = JSON.resolve(
+            json: json,
+            path: 'result.certificate.data.transactions.0.$txKind.recipient',
+            defaultValue: '');
       }
+
+      tansactions.add(
+        SuiTansaction(
+          seq: seq[digests.indexOf(transactionDigest)],
+          txId: transactionDigest,
+          status: status,
+          txGas: txGas,
+          kind: txKind,
+          from: from,
+          error: error,
+          timestampMs: timestampMs,
+          isSender: from == address,
+          amount: amount,
+          recipient: recipient,
+        ),
+      );
     });
 
-    print(tansactions);
+    return tansactions;
   }
+}
+
+class SuiTansaction {
+  final num seq;
+  final String txId;
+  final String status;
+  final num txGas;
+  final String kind;
+  final String from;
+  final String error;
+  final num timestampMs;
+  final bool isSender;
+  final num amount;
+  final String recipient;
+  SuiTansaction(
+      {required this.seq,
+      required this.txId,
+      required this.status,
+      required this.txGas,
+      required this.kind,
+      required this.from,
+      required this.error,
+      required this.timestampMs,
+      required this.isSender,
+      required this.amount,
+      required this.recipient});
 }
