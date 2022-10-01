@@ -43,6 +43,10 @@ class SuiApi {
               seq.add(e[0]);
             }));
 
+    if (digests.isEmpty) {
+      return tansactions;
+    }
+
     (await _apiService.post(
             '/',
             digests
