@@ -1,9 +1,9 @@
 import 'package:wallet/controller/global_theme_controller.dart';
 import 'package:wallet/controller/sui_wallet_controller.dart';
 import 'package:wallet/pages/home_page.dart';
-import 'package:wallet/pages/landing_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:wallet/pages/welcome_page.dart';
 
 SuiWalletController suiWallet = SuiWalletController();
 GlobalThemeController theme = GlobalThemeController();
@@ -26,7 +26,7 @@ class App extends StatelessWidget {
     if (suiWallet.hasWallet) {
       return const HomePage();
     } else {
-      return const LandingPage();
+      return const WelcomePage();
     }
   }
 }
