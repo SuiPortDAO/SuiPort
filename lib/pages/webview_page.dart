@@ -31,16 +31,17 @@ class _WebViewXPageState extends State<WebViewXPage> {
       body: Center(
         child: WebViewX(
           key: const ValueKey('webviewx'),
-          initialContent: r'''
-            <button>测试权限</button>
-            <script>
-              
-document.querySelector('button').addEventListener('click', () => {
-    suiWallet.hasPermissions().then(console.log)
-})
-            </script>
-          ''',
-          initialSourceType: SourceType.html,
+//           initialContent: r'''
+//             <button>测试权限</button>
+//             <script>
+
+// document.querySelector('button').addEventListener('click', () => {
+//     suiWallet.hasPermissions().then(console.log)
+// })
+//             </script>
+//           ''',
+          initialContent: 'https://sui-wallet-demo.sui.io/',
+          initialSourceType: SourceType.url,
           height: screenSize.height,
           width: screenSize.height,
           onWebViewCreated: (controller) => webviewController = controller,
