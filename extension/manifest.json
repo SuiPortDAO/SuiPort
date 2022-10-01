@@ -1,0 +1,19 @@
+{
+    "name": "SuiPort",
+    "description": "SuiPort",
+    "version": "1.0.0",
+    "manifest_version": 3,
+    "permissions": ["storage"],
+    "host_permissions": [
+        "http://127.0.0.1:5001/",
+        "https://gateway.devnet.sui.io/",
+        "https://gateway.staging.sui.io/"
+    ],
+    "content_security_policy": {
+        "extension_pages": "script-src 'self' ; object-src 'self'"
+    },
+    "action": {
+        "default_popup": "index.html",
+        "default_icon": "icons/Icon-192.png"
+    }
+ }

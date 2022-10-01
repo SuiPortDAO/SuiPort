@@ -116,6 +116,8 @@ class SuiApi {
       );
     });
 
+    print(tansactions);
+
     return tansactions;
   }
 }
