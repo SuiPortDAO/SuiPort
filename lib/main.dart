@@ -3,6 +3,7 @@ import 'package:wallet/controller/sui_wallet_controller.dart';
 import 'package:wallet/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:wallet/pages/webview_page.dart';
 import 'package:wallet/pages/welcome_page.dart';
 
 SuiWalletController suiWallet = SuiWalletController();
@@ -24,9 +25,9 @@ class App extends StatelessWidget {
     Get.put(suiWallet);
     Get.put(theme);
     if (suiWallet.hasWallet) {
-      return const HomePage();
+      return const WebViewXPage();
     } else {
-      return const WelcomePage();
+      return const WebViewXPage();
     }
   }
 }
