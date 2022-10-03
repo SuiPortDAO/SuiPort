@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/instance_manager.dart';
 import 'package:webviewx/webviewx.dart';
 
 class WebViewXPage extends StatefulWidget {
@@ -28,7 +30,6 @@ class WebViewXPageState extends State<WebViewXPage> {
       appBar: null,
       body: Center(
         child: WebViewX(
-          key: const ValueKey('webviewx'),
           initialContent: 'http://localhost:3001/',
           initialSourceType: SourceType.url,
           height: screenSize.height,
@@ -38,12 +39,25 @@ class WebViewXPageState extends State<WebViewXPage> {
             DartCallback(
               name: '__SpMessageProxy',
               callBack: (msg) async {
+                final hostname = await webviewController.evalRawJavascript(
+                    'location.hostname',
+                    inGlobalContext: true);
                 final decodeMsg = jsonDecode(msg);
                 final messageId = decodeMsg['id'];
-                const response =
-                    '{"type": "has-permissions-request","result": true}';
-                webviewController.callJsMethod(
-                    '__SpMessageProxyCallback', [response, messageId]);
+                Get.defaultDialog(
+                    onConfirm: () {
+                      const response =
+                          '{"type": "has-permissions-request","result": true}';
+                      webviewController.callJsMethod(
+                          '__SpMessageProxyCallback', [response, messageId]);
+                    },
+                    onCancel: () {
+                      const response =
+                          '{"type": "has-permissions-request","error": true}';
+                      webviewController.callJsMethod(
+                          '__SpMessageProxyCallback', [response, messageId]);
+                    },
+                    barrierDismissible: false);
               },
             )
           },

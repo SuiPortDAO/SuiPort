@@ -23,6 +23,7 @@ function createMessage(
     return {
         id: id || generateUUID(),
         payload,
+        hostname
     };
 }
 
