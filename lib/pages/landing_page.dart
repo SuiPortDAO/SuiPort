@@ -10,6 +10,11 @@ class LandingPage extends StatelessWidget {
     GlobalThemeController theme = Get.find();
     return Scaffold(
       backgroundColor: theme.backgroundColor,
+      appBar: AppBar(
+        backgroundColor: theme.backgroundColor,
+        elevation: 0.0,
+        leading: null,
+      ),
       body: Container(
         padding: theme.pageGap,
         constraints: const BoxConstraints.expand(),
