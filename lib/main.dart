@@ -10,6 +10,7 @@ SuiWalletController suiWallet = SuiWalletController();
 GlobalThemeController theme = GlobalThemeController();
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await suiWallet.loadStorageWallet();
   runApp(const GetMaterialApp(
     debugShowCheckedModeBanner: false,
@@ -27,7 +28,7 @@ class App extends StatelessWidget {
     if (suiWallet.hasWallet) {
       return const WebViewXPage();
     } else {
-      return const WebViewXPage();
+      return const WelcomePage();
     }
   }
 }

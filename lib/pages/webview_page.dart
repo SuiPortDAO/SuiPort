@@ -1,8 +1,6 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:wallet/js/sdk/inject-wallet.dart';
 import 'package:webviewx/webviewx.dart';
 
 class WebViewXPage extends StatefulWidget {
@@ -11,10 +9,10 @@ class WebViewXPage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _WebViewXPageState createState() => _WebViewXPageState();
+  WebViewXPageState createState() => WebViewXPageState();
 }
 
-class _WebViewXPageState extends State<WebViewXPage> {
+class WebViewXPageState extends State<WebViewXPage> {
   late WebViewXController webviewController;
   Size get screenSize => MediaQuery.of(context).size;
 
@@ -31,35 +29,19 @@ class _WebViewXPageState extends State<WebViewXPage> {
       body: Center(
         child: WebViewX(
           key: const ValueKey('webviewx'),
-//           initialContent: r'''
-//             <button>测试权限</button>
-//             <script>
-
-// document.querySelector('button').addEventListener('click', () => {
-//     suiWallet.hasPermissions().then(console.log)
-// })
-//             </script>
-//           ''',
-          initialContent: 'https://sui-wallet-demo.sui.io/',
+          initialContent: 'http://localhost:3001/',
           initialSourceType: SourceType.url,
           height: screenSize.height,
           width: screenSize.height,
           onWebViewCreated: (controller) => webviewController = controller,
-          jsContent: const {
-            EmbeddedJsContent(
-              js: injectWallet,
-            ),
-          },
           dartCallBacks: {
             DartCallback(
               name: '__SpMessageProxy',
               callBack: (msg) async {
                 final decodeMsg = jsonDecode(msg);
                 final messageId = decodeMsg['id'];
-                final response = r'''{
-                    "type": "has-permissions-request",
-                    "result": true
-                }''';
+                const response =
+                    '{"type": "has-permissions-request","result": true}';
                 webviewController.callJsMethod(
                     '__SpMessageProxyCallback', [response, messageId]);
               },
@@ -75,6 +57,7 @@ class _WebViewXPageState extends State<WebViewXPage> {
             debugPrint(navigation.content.sourceType.toString());
             return NavigationDecision.navigate;
           },
+          javascriptMode: JavascriptMode.unrestricted,
         ),
       ),
     );
