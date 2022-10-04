@@ -1,13 +1,12 @@
 import 'package:wallet/common/layout.dart';
 import 'package:wallet/common/svg.dart';
-import 'package:wallet/pages/create_wallet.dart';
 import 'package:wallet/pages/import_mnemonic.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controller/global_theme_controller.dart';
 
-class LandingPage extends StatelessWidget {
-  const LandingPage({super.key});
+class CreateWalletPage extends StatelessWidget {
+  const CreateWalletPage({super.key});
   @override
   Widget build(context) {
     GlobalThemeController theme = Get.find();
@@ -37,17 +36,17 @@ class LandingPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Center(
-                        child: svgNewTo(),
+                        child: svgCreateWallet(),
                       ),
                       Text(
-                        'New to',
+                        'Create',
                         style: TextStyle(
                             color: theme.svgColor1,
                             fontSize: 26,
                             fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        'SuiPort Wallet',
+                        'New Wallet',
                         style: TextStyle(
                             color: theme.svgColor1,
                             fontSize: 24,
@@ -55,7 +54,7 @@ class LandingPage extends StatelessWidget {
                       ),
                       buildColumnGap(12.0),
                       Text(
-                        'Create a new wallet or import your existing wallet by 12-word seed phrase.',
+                        'Creating a wallet generates new recovery passphrase. Using it you can backup and restore your wallet.',
                         style: TextStyle(
                             fontSize: 16,
                             color: theme.textColor2,
@@ -68,7 +67,7 @@ class LandingPage extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                Get.to(const CreateWalletPage());
+                Get.to(const ImportMnemonic());
               },
               style: ButtonStyle(
                   foregroundColor: MaterialStateProperty.all(theme.textColor1),
@@ -76,21 +75,7 @@ class LandingPage extends StatelessWidget {
                       MaterialStateProperty.all(theme.primaryColor1)),
               child: Padding(
                 padding: theme.buttonPadding,
-                child: const Text('Create new wallet'),
-              ),
-            ),
-            buildColumnGap(18.0),
-            ElevatedButton(
-              onPressed: () {
-                Get.to(const ImportMnemonic());
-              },
-              style: ButtonStyle(
-                  foregroundColor: MaterialStateProperty.all(theme.textColor1),
-                  backgroundColor:
-                      MaterialStateProperty.all(theme.primaryColor2)),
-              child: Padding(
-                padding: theme.buttonPadding,
-                child: const Text('Import new wallet'),
+                child: const Text('Create Wallte Now'),
               ),
             ),
           ],

@@ -38,3 +38,12 @@ svgNewTo() {
     width: 320,
   );
 }
+
+svgCreateWallet() {
+  return SvgPicture.asset(
+    'assets/create_wallet.svg',
+    semanticsLabel: 'Create Wallet',
+    height: 320,
+    width: 320,
+  );
+}
