@@ -91,7 +91,7 @@ class WelcomePage extends StatelessWidget {
                     foregroundColor:
                         MaterialStateProperty.all(theme.textColor1),
                     backgroundColor:
-                        MaterialStateProperty.all(theme.primaryColor)),
+                        MaterialStateProperty.all(theme.primaryColor1)),
                 child: Padding(
                   padding: theme.buttonPadding,
                   child: const Text('Get Started'),

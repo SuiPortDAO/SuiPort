@@ -38,7 +38,7 @@ class ImportMnemonic extends StatelessWidget {
                         ),
                         TextField(
                           controller: mnemonicController,
-                          cursorColor: theme.primaryColor,
+                          cursorColor: theme.primaryColor1,
                           maxLines: 4,
                           style: TextStyle(
                             color: theme.textColor1,
@@ -60,7 +60,7 @@ class ImportMnemonic extends StatelessWidget {
                       foregroundColor:
                           MaterialStateProperty.all(theme.textColor1),
                       backgroundColor:
-                          MaterialStateProperty.all(theme.primaryColor)),
+                          MaterialStateProperty.all(theme.primaryColor1)),
                   child: const Padding(
                     padding: EdgeInsets.only(
                       top: 12,

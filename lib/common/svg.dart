@@ -19,3 +19,22 @@ svgTick({Color? color}) {
     color: color ?? Colors.white,
   );
 }
+
+svgBack({Color? color}) {
+  return SvgPicture.asset(
+    'assets/back.svg',
+    semanticsLabel: 'Back',
+    height: 25,
+    width: 25,
+    color: color ?? Colors.white,
+  );
+}
+
+svgNewTo() {
+  return SvgPicture.asset(
+    'assets/new_to.svg',
+    semanticsLabel: 'New To',
+    height: 320,
+    width: 320,
+  );
+}

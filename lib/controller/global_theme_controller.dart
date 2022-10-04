@@ -3,7 +3,8 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 class GlobalThemeController extends GetxController {
   var successColor = const Color.fromARGB(255, 80, 160, 255);
-  var primaryColor = const Color.fromARGB(255, 80, 160, 255);
+  var primaryColor1 = const Color.fromARGB(255, 80, 160, 255);
+  var primaryColor2 = const Color.fromARGB(255, 32, 54, 81);
   var backgroundColor = const Color.fromRGBO(26, 27, 39, 1);
   var holderBackGroundColor = const Color.fromARGB(255, 90, 90, 94);
   var textColor1 = const Color.fromARGB(255, 255, 255, 255);
