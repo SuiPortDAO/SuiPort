@@ -32,6 +32,7 @@ class SuiWalletController extends GetxController {
     if (hasWallet) {
       initCurrentWallet();
     }
+    print(wallets);
   }
 
   addWallet(String mnemonic) {

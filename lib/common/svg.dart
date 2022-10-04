@@ -47,3 +47,12 @@ svgCreateWallet() {
     width: 320,
   );
 }
+
+svgBackupWallet() {
+  return SvgPicture.asset(
+    'assets/backup_wallet.svg',
+    semanticsLabel: 'Backup Wallet',
+    height: 320,
+    width: 320,
+  );
+}

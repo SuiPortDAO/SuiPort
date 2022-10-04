@@ -28,7 +28,7 @@ class App extends StatelessWidget {
     if (suiWallet.hasWallet) {
       return const WelcomePage();
     } else {
-      return const LandingPage();
+      return const WelcomePage();
     }
   }
 }

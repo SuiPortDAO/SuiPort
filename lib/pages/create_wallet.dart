@@ -1,8 +1,9 @@
 import 'package:wallet/common/layout.dart';
 import 'package:wallet/common/svg.dart';
-import 'package:wallet/pages/import_mnemonic.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:wallet/pages/backup_wallet.dart';
+import 'package:wallet/utils/mnemonic.dart';
 import '../controller/global_theme_controller.dart';
 
 class CreateWalletPage extends StatelessWidget {
@@ -41,24 +42,24 @@ class CreateWalletPage extends StatelessWidget {
                       Text(
                         'Create',
                         style: TextStyle(
-                            color: theme.svgColor1,
-                            fontSize: 26,
-                            fontWeight: FontWeight.bold),
+                          color: theme.svgColor1,
+                          fontSize: 26,
+                        ),
                       ),
                       Text(
                         'New Wallet',
                         style: TextStyle(
-                            color: theme.svgColor1,
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold),
+                          color: theme.svgColor1,
+                          fontSize: 24,
+                        ),
                       ),
                       buildColumnGap(12.0),
                       Text(
                         'Creating a wallet generates new recovery passphrase. Using it you can backup and restore your wallet.',
                         style: TextStyle(
-                            fontSize: 16,
-                            color: theme.textColor2,
-                            fontWeight: FontWeight.bold),
+                          fontSize: 16,
+                          color: theme.textColor2,
+                        ),
                       ),
                     ],
                   )
@@ -67,7 +68,8 @@ class CreateWalletPage extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                Get.to(const ImportMnemonic());
+                final mnemonic = generateMnemonic();
+                Get.to(const BackupWalletPage(), arguments: mnemonic);
               },
               style: ButtonStyle(
                   foregroundColor: MaterialStateProperty.all(theme.textColor1),

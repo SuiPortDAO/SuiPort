@@ -21,9 +21,9 @@ class WelcomePage extends StatelessWidget {
             Text(
               text,
               style: TextStyle(
-                  fontSize: 16,
-                  color: theme.textColor1,
-                  fontWeight: FontWeight.bold),
+                fontSize: 16,
+                color: theme.textColor1,
+              ),
             )
           ],
         );
@@ -60,19 +60,19 @@ class WelcomePage extends StatelessWidget {
                   Text(
                     'Welcome to SuiPort Wallet',
                     style: TextStyle(
-                        fontSize: 26,
-                        color: theme.textColor1,
-                        fontWeight: FontWeight.bold),
+                      fontSize: 22,
+                      color: theme.textColor1,
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 24, vertical: 38),
+                        horizontal: 12, vertical: 38),
                     child: Text(
                       'Connecting you to the decentralized web and SUI network.',
                       style: TextStyle(
-                          fontSize: 16,
-                          color: theme.textColor2,
-                          fontWeight: FontWeight.bold),
+                        fontSize: 16,
+                        color: theme.textColor2,
+                      ),
                       textAlign: TextAlign.center,
                     ),
                   ),
