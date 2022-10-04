@@ -43,7 +43,7 @@ class LandingPage extends StatelessWidget {
                         'New to',
                         style: TextStyle(
                           color: theme.svgColor1,
-                          fontSize: 26,
+                          fontSize: 24,
                         ),
                       ),
                       Text(

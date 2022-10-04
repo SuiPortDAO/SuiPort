@@ -21,6 +21,21 @@ class SuiWalletController extends GetxController {
     return wallets.isNotEmpty;
   }
 
+  get suiBalnce {
+    return currentWalletBalance[coinSuiType] ?? 0;
+  }
+
+  get currentWalletAddressFormated {
+    final walletAddress = currentWalletAddress.value;
+    final start = walletAddress.substring(0, 6);
+    final end = walletAddress.substring(walletAddress.length - 3);
+    return '0x$start...$end';
+  }
+
+  get currentWalletAddressStandard {
+    return '0x$currentWalletAddress';
+  }
+
   loadStorageWallet() async {
     final all = await safeStorage.readAll();
     all.entries
@@ -74,6 +89,8 @@ class SuiWalletController extends GetxController {
           }
         }
       });
+
+      print(acc);
 
       currentWalletBalance.value = acc;
     }
