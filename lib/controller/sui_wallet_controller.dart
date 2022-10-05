@@ -27,6 +27,9 @@ class SuiWalletController extends GetxController {
 
   get currentWalletAddressFormated {
     final walletAddress = currentWalletAddress.value;
+    if (walletAddress.isEmpty) {
+      return '';
+    }
     final start = walletAddress.substring(0, 6);
     final end = walletAddress.substring(walletAddress.length - 3);
     return '0x$start...$end';
