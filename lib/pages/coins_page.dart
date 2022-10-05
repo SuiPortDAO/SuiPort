@@ -139,66 +139,68 @@ class CoinsPage extends StatelessWidget {
                   },
                   itemCount: 1,
                   itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(9),
-                          color: theme.primaryColor2),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Row(
-                          children: [
-                            ClipOval(
-                                child: Image.asset(
-                              'assets/usdt.png',
-                              height: 42,
-                            )),
-                            buildRowGap(8.0),
-                            Expanded(
-                              flex: 1,
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        'Tether',
-                                        style: TextStyle(
-                                            color: theme.textColor1,
-                                            fontSize: 16),
-                                      ),
-                                      Text(
-                                        '0.00 USDT',
-                                        style:
-                                            TextStyle(color: theme.textColor1),
-                                      )
-                                    ],
-                                  ),
-                                  Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            '\$1.00',
-                                            style: TextStyle(
-                                                color: theme.textColor2),
-                                          ),
-                                          Text(
-                                            '\$0.00',
-                                            style: TextStyle(
-                                                color: theme.textColor2),
-                                          )
-                                        ],
-                                      ),
-                                      Row()
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
+                    return Material(
+                      color: theme.primaryColor2,
+                      borderRadius: BorderRadius.circular(9),
+                      child: InkWell(
+                        onTap: () {},
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Row(
+                            children: [
+                              ClipOval(
+                                  child: Image.asset(
+                                'assets/usdt.png',
+                                height: 42,
+                              )),
+                              buildRowGap(8.0),
+                              Expanded(
+                                flex: 1,
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          'Tether',
+                                          style: TextStyle(
+                                              color: theme.textColor1,
+                                              fontSize: 16),
+                                        ),
+                                        Text(
+                                          '0.00 USDT',
+                                          style: TextStyle(
+                                              color: theme.textColor1),
+                                        )
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              '\$1.00',
+                                              style: TextStyle(
+                                                  color: theme.textColor2),
+                                            ),
+                                            Text(
+                                              '\$0.00',
+                                              style: TextStyle(
+                                                  color: theme.textColor2),
+                                            )
+                                          ],
+                                        ),
+                                        Row()
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     );
