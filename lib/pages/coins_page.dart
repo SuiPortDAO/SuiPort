@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:wallet/common/layout.dart';
 import 'package:wallet/common/svg.dart';
 import 'package:wallet/main.dart';
+import 'package:wallet/utils/format.dart';
 
 import '../controller/global_theme_controller.dart';
 import '../controller/sui_wallet_controller.dart';
@@ -31,10 +32,10 @@ class CoinsPage extends StatelessWidget {
             textBaseline: TextBaseline.alphabetic,
             children: [
               Obx(() => Text(
-                    '${sui.suiBalnce}',
+                    moneyformat(sui.suiBalnce),
                     style: TextStyle(
                         color: theme.textColor1,
-                        fontSize: 38,
+                        fontSize: 28,
                         fontWeight: FontWeight.bold),
                   )),
               buildRowGap(4.0),
@@ -47,7 +48,7 @@ class CoinsPage extends StatelessWidget {
           Row(
             children: [
               Text(
-                '${suiWallet.currentWalletAddressFormated}',
+                '${suiWallet.currentWalletAddressFuzzyed}',
                 style: TextStyle(color: theme.textColor2),
               ),
               IconButton(
@@ -139,115 +140,19 @@ class CoinsPage extends StatelessWidget {
                   },
                   itemCount: 1,
                   itemBuilder: (BuildContext context, int index) {
-                    return Material(
-                      color: theme.primaryColor2,
-                      borderRadius: BorderRadius.circular(9),
-                      child: InkWell(
-                        onTap: () {},
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Row(
-                            children: [
-                              ClipOval(
-                                  child: Image.asset(
-                                'assets/usdt.png',
-                                height: 42,
-                              )),
-                              buildRowGap(8.0),
-                              Expanded(
-                                flex: 1,
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          'Tether',
-                                          style: TextStyle(
-                                              color: theme.textColor1,
-                                              fontSize: 16),
-                                        ),
-                                        Text(
-                                          '0.00 USDT',
-                                          style: TextStyle(
-                                              color: theme.textColor1),
-                                        )
-                                      ],
-                                    ),
-                                    Column(
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              '\$1.00',
-                                              style: TextStyle(
-                                                  color: theme.textColor2),
-                                            ),
-                                            Text(
-                                              '\$0.00',
-                                              style: TextStyle(
-                                                  color: theme.textColor2),
-                                            )
-                                          ],
-                                        ),
-                                        Row()
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
+                    // TODO
+                    // Use real data
+                    return ListItem(
+                      theme: theme,
+                      circleImage: Image.asset('assets/usdt.png', height: 42),
+                      leftStart: 'Tether',
+                      rightStart: '0.00 USDT',
+                      leftEnd: '\$1.00',
+                      rightEnd: '\$0.00',
                     );
                   }))
         ],
       ),
     );
-  }
-}
-
-class CardButton extends StatelessWidget {
-  const CardButton(
-      {Key? key,
-      required this.theme,
-      required this.text,
-      required this.icon,
-      required this.backgroundColor})
-      : super(key: key);
-
-  final GlobalThemeController theme;
-  final String text;
-  final Widget icon;
-  final MaterialStateProperty<Color> backgroundColor;
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-        style: ButtonStyle(
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18.0),
-            )),
-            foregroundColor: MaterialStateProperty.all(theme.textColor1),
-            backgroundColor: backgroundColor),
-        onPressed: () {},
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 18),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                text,
-                style: TextStyle(color: theme.textColor1, fontSize: 16),
-              ),
-              icon
-            ],
-          ),
-        ));
   }
 }

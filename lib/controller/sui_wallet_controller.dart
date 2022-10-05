@@ -1,4 +1,5 @@
 import 'package:wallet/api/sui_api.dart';
+import 'package:wallet/utils/format.dart';
 import 'package:wallet/utils/mnemonic.dart';
 import 'package:wallet/utils/safe_storage.dart';
 import 'package:get/get.dart';
@@ -9,6 +10,7 @@ class SuiWalletController extends GetxController {
   var wallets = [].obs;
   var currentWalletBalance = {}.obs;
   var currentWalletAddress = ''.obs;
+  var transactions = [].obs;
 
   SuiWallet? get currentWallet {
     if (hasWallet) {
@@ -25,18 +27,12 @@ class SuiWalletController extends GetxController {
     return currentWalletBalance[coinSuiType] ?? 0;
   }
 
-  get currentWalletAddressFormated {
-    final walletAddress = currentWalletAddress.value;
-    if (walletAddress.isEmpty) {
-      return '';
-    }
-    final start = walletAddress.substring(0, 6);
-    final end = walletAddress.substring(walletAddress.length - 3);
-    return '0x$start...$end';
+  get currentWalletAddressFuzzyed {
+    return addressFuzzy(currentWalletAddress.value);
   }
 
   get currentWalletAddressStandard {
-    return '0x$currentWalletAddress';
+    return addressStandard(currentWalletAddress.value);
   }
 
   loadStorageWallet() async {
@@ -93,15 +89,16 @@ class SuiWalletController extends GetxController {
         }
       });
 
-      print(acc);
-
       currentWalletBalance.value = acc;
     }
   }
 
   getTransactionsForAddress() async {
-    currentWallet?._suiApi
-        ?.getTransactionsForAddress(currentWalletAddress.string);
+    if (hasWallet) {
+      transactions.value = await currentWallet?._suiApi
+              ?.getTransactionsForAddress(currentWalletAddress.string) ??
+          [];
+    }
   }
 }
 

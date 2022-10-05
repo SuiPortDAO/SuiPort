@@ -19,6 +19,7 @@ class HomePage extends StatelessWidget {
     GlobalThemeController theme = Get.find();
     SuiWalletController sui = Get.find();
     GlobalLayoutController layout = Get.find();
+    const appBarLabels = ['SuiPort', 'NFTs', 'Apps', 'Activity'];
     sui.getTransactionsForAddress();
     return Scaffold(
       appBar: AppBar(
@@ -30,16 +31,24 @@ class HomePage extends StatelessWidget {
             icon: svgMenu(),
           )
         ],
-        leading: Row(
-          children: [
-            buildRowGap(15.0),
-            svgLogo(height: 28.0, width: 28.0),
-            buildRowGap(8.0),
-            const Text(
-              'SuiPort',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            )
-          ],
+        leading: Obx(
+          () {
+            final text = Text(
+              appBarLabels[layout.homeIndex.value],
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            );
+            if (layout.homeIndex.value > 0) {
+              return Row(children: [buildRowGap(15.0), text]);
+            }
+            return Row(
+              children: [
+                buildRowGap(15.0),
+                svgLogo(height: 28.0, width: 28.0),
+                buildRowGap(8.0),
+                text
+              ],
+            );
+          },
         ),
         leadingWidth: 120,
       ),
@@ -71,8 +80,8 @@ class HomePage extends StatelessWidget {
                   )),
               SalomonBottomBarItem(
                   icon: svgActivity(color: theme.primaryColor1),
-                  title: const Text(
-                    'Activity',
+                  title: Text(
+                    appBarLabels[3],
                   ))
             ],
             onTap: (i) => layout.setHomeIndex(i),

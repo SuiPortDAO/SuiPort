@@ -46,6 +46,7 @@ dependencies:
   webviewx:
   flutter_svg:
   salomon_bottom_bar: ^3.3.1
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:
@@ -94,6 +95,8 @@ flutter:
     - stack.svg
     - swap.svg
     - copy.svg
+    - t_send.svg
+    - t_receive.svg
 
     - usdt.png
 
