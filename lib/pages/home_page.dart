@@ -23,7 +23,7 @@ class HomePage extends StatelessWidget {
     sui.getTransactionsForAddress();
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: theme.backgroundColor,
+        backgroundColor: theme.backgroundColor1,
         elevation: 0.0,
         actions: [
           IconButton(
@@ -52,7 +52,7 @@ class HomePage extends StatelessWidget {
         ),
         leadingWidth: 120,
       ),
-      backgroundColor: theme.backgroundColor,
+      backgroundColor: theme.backgroundColor1,
       body: Obx(() => [
             const CoinsPage(),
             const NFTsPage(),

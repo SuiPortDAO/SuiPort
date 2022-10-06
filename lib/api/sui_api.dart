@@ -1,7 +1,10 @@
+import 'package:dio/dio.dart';
 import 'package:wallet/api/api_service.dart';
 import 'package:wallet/api/get_txn_digests_response.dart';
 import 'package:wallet/api/sui_object_info_response.dart';
 import 'package:wallet/api/sui_request.dart';
+import 'package:wallet/common/toast.dart';
+import 'package:wallet/utils/format.dart';
 import 'package:wallet/utils/json.dart';
 
 import 'get_object_data_response.dart';
@@ -16,16 +19,27 @@ class SuiApi {
   }
 
   Future<List<SuiObject?>> getObjectBatch(List<String?>? objectIds) async {
-    final response = await _apiService.post(
-        '/',
-        objectIds
-            ?.map((String? objectId) =>
-                SuiRequest(method: 'sui_getObject', params: [objectId ?? '']))
-            .toList());
-    return response.data
-        .map((e) => GetObjectDataResponse.fromJson(e).result?.details)
-        .cast<SuiObject>()
-        .toList();
+    try {
+      final response = await _apiService.post(
+          '/',
+          objectIds
+              ?.map((String? objectId) =>
+                  SuiRequest(method: 'sui_getObject', params: [objectId ?? '']))
+              .toList());
+      if (response.data is Map && response.data['error']) {
+        return [];
+      }
+      return response.data
+          .map((e) => GetObjectDataResponse.fromJson(e).result?.details)
+          .cast<SuiObject>()
+          .toList();
+    } on DioError catch (e) {
+      showError('Network Error', (e.response ?? e.message).toString());
+      return [];
+    } on Error catch (e) {
+      showError('getObjectBatch Error', e.toString());
+      return [];
+    }
   }
 
   Future<List<SuiTansaction>> getTransactionsForAddress(address) async {
@@ -39,8 +53,10 @@ class SuiApi {
     ]))
         .data
         .forEach((e) => GetTxnDigestsResponse.fromJson(e).result?.forEach((e) {
-              digests.add(e[1]);
-              seq.add(e[0]);
+              if (!seq.contains(e[0])) {
+                digests.add(e[1]);
+                seq.add(e[0]);
+              }
             }));
 
     if (digests.isEmpty) {
@@ -109,15 +125,13 @@ class SuiApi {
           from: from,
           error: error,
           timestampMs: timestampMs,
-          isSender: from == address,
+          isSender: addressStandard(from) == addressStandard(address),
           amount: amount,
           recipient: recipient,
         ),
       );
     });
-
-    print(tansactions);
-
+    tansactions.sort((a, b) => b.timestampMs - a.timestampMs);
     return tansactions;
   }
 }
@@ -130,7 +144,7 @@ class SuiTansaction {
   final String kind;
   final String from;
   final String error;
-  final num timestampMs;
+  final int timestampMs;
   final bool isSender;
   final num amount;
   final String recipient;

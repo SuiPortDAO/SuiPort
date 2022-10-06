@@ -53,8 +53,10 @@ class ListItem extends StatelessWidget {
                       children: [
                         Text(
                           leftStart,
-                          style:
-                              TextStyle(color: theme.textColor1, fontSize: 16),
+                          style: TextStyle(
+                              color: theme.textColor1,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
                         ),
                         Text(
                           rightStart,

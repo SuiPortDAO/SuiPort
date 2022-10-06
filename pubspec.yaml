@@ -45,8 +45,8 @@ dependencies:
   flutter_secure_storage: ^6.0.0
   webviewx:
   flutter_svg:
-  salomon_bottom_bar: ^3.3.1
-  intl: ^0.17.0
+  salomon_bottom_bar:
+  intl:
 
 dev_dependencies:
   flutter_test:

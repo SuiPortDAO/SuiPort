@@ -1,6 +1,7 @@
 import 'package:intl/intl.dart';
 
-final oCcy = NumberFormat("#,##0.00", "en_US");
+final f = DateFormat('yyyy-MM-dd HH:mm', 'en_US');
+final oCcy = NumberFormat("#,##0.00", 'en_US');
 
 addressFuzzy(String address) {
   if (address.isEmpty) {
@@ -26,4 +27,8 @@ addressStandard(String address) {
 
 moneyformat(money) {
   return oCcy.format(money);
+}
+
+dateTimeFormat(date) {
+  return f.format(date);
 }

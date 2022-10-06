@@ -161,8 +161,8 @@ svgTSend({double? height, double? width, Color? color}) {
   return SvgPicture.asset(
     'assets/t_send.svg',
     semanticsLabel: 'Transaction Send',
-    height: height ?? 24,
-    width: width ?? 24,
+    height: height ?? 18,
+    width: width ?? 18,
     color: color ?? Colors.white,
   );
 }
@@ -171,8 +171,8 @@ svgTReceive({double? height, double? width, Color? color}) {
   return SvgPicture.asset(
     'assets/t_receive.svg',
     semanticsLabel: 'Transaction Receive',
-    height: height ?? 24,
-    width: width ?? 24,
+    height: height ?? 18,
+    width: width ?? 18,
     color: color ?? Colors.white,
   );
 }

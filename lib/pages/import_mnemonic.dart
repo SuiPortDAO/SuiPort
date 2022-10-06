@@ -13,7 +13,7 @@ class ImportMnemonic extends StatelessWidget {
     SuiWalletController suiWallet = Get.find();
     var mnemonicController = TextEditingController();
     return Scaffold(
-        backgroundColor: theme.backgroundColor,
+        backgroundColor: theme.backgroundColor1,
         body: Padding(
           padding: const EdgeInsets.only(top: 120, bottom: 120),
           child: ConstrainedBox(

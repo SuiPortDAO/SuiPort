@@ -35,6 +35,14 @@ class SuiWalletController extends GetxController {
     return addressStandard(currentWalletAddress.value);
   }
 
+  get transactionsSend {
+    return transactions.takeWhile((element) => element.isSender);
+  }
+
+  get transactionsReceive {
+    return transactions.takeWhile((element) => !element.isSender);
+  }
+
   loadStorageWallet() async {
     final all = await safeStorage.readAll();
     all.entries
@@ -46,7 +54,6 @@ class SuiWalletController extends GetxController {
     if (hasWallet) {
       initCurrentWallet();
     }
-    print(wallets);
   }
 
   addWallet(String mnemonic) {
@@ -95,6 +102,7 @@ class SuiWalletController extends GetxController {
 
   getTransactionsForAddress() async {
     if (hasWallet) {
+      print('update transactions');
       transactions.value = await currentWallet?._suiApi
               ?.getTransactionsForAddress(currentWalletAddress.string) ??
           [];

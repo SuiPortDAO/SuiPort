@@ -12,9 +12,9 @@ class CreateWalletPage extends StatelessWidget {
   Widget build(context) {
     GlobalThemeController theme = Get.find();
     return Scaffold(
-      backgroundColor: theme.backgroundColor,
+      backgroundColor: theme.backgroundColor1,
       appBar: AppBar(
-        backgroundColor: theme.backgroundColor,
+        backgroundColor: theme.backgroundColor1,
         elevation: 0.0,
         leading: IconButton(
             onPressed: () {
