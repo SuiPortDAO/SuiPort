@@ -1,6 +1,7 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:wallet/utils/format.dart';
 
@@ -268,6 +269,7 @@ class _SendSheetState extends State<SendSheet> {
     }
     if (validateAmount(amountController.text) == null &&
         validateSuiAddress(addressController.text) == null) {
+      EasyLoading.show(status: 'send...');
       final transaction = await sui.transferSui(
           addressController.text, int.tryParse(amountController.text) ?? 0);
 
@@ -292,6 +294,7 @@ class _SendSheetState extends State<SendSheet> {
               Get.to(() => const ActivityDetailPage(), arguments: transaction);
             }).show();
         sui.getBalance();
+        EasyLoading.dismiss();
       }
     }
   }

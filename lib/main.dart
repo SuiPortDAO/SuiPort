@@ -1,3 +1,4 @@
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:wallet/controller/global_layout_controller.dart';
 import 'package:wallet/controller/global_theme_controller.dart';
 import 'package:wallet/controller/sui_wallet_controller.dart';
@@ -13,9 +14,10 @@ GlobalLayoutController layout = GlobalLayoutController();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await suiWallet.loadStorageWallet();
-  runApp(const GetMaterialApp(
+  runApp(GetMaterialApp(
     debugShowCheckedModeBanner: false,
-    home: App(),
+    home: const App(),
+    builder: EasyLoading.init(),
   ));
 }
 

@@ -49,6 +49,7 @@ dependencies:
   intl:
   appinio_swiper:
   awesome_dialog: 
+  flutter_easyloading:
 
 dev_dependencies:
   flutter_test:
