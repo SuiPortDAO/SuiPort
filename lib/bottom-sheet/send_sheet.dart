@@ -294,6 +294,7 @@ class _SendSheetState extends State<SendSheet> {
               Get.to(() => const ActivityDetailPage(), arguments: transaction);
             }).show();
         sui.getBalance();
+        sui.getTransactionsForAddress();
       }
     }
   }
