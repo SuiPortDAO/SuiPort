@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -94,6 +95,7 @@ class CoinsPage extends StatelessWidget {
               Expanded(
                 flex: 1,
                 child: CardButton(
+                  onPressed: () {},
                   theme: theme,
                   text: 'Receive',
                   icon: svgReceive(),

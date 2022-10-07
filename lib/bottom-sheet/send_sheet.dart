@@ -1,7 +1,7 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:wallet/common/toast.dart';
 import 'package:wallet/utils/format.dart';
 
 import '../common/layout.dart';
@@ -272,9 +272,26 @@ class _SendSheetState extends State<SendSheet> {
           addressController.text, int.tryParse(amountController.text) ?? 0);
 
       if (transaction != null) {
+        AwesomeDialog(
+            context: context,
+            dialogType: DialogType.success,
+            desc: 'Send ${moneyFormat(transaction.amount)}',
+            descTextStyle: TextStyle(color: theme.textColor2, fontSize: 16),
+            title: 'Transaction Success',
+            titleTextStyle: TextStyle(color: theme.textColor1, fontSize: 20),
+            dialogBackgroundColor: theme.primaryColor2,
+            btnCancelOnPress: () {
+              Get.back();
+            },
+            btnCancelText: 'Back',
+            btnCancelColor: theme.primaryColor2,
+            btnOkText: 'Detail',
+            btnOkColor: theme.primaryColor1,
+            btnOkOnPress: () {
+              Get.back();
+              Get.to(() => const ActivityDetailPage(), arguments: transaction);
+            }).show();
         sui.getBalance();
-        Get.back();
-        Get.to(() => const ActivityDetailPage(), arguments: transaction);
       }
     }
   }

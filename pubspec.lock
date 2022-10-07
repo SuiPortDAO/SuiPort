@@ -36,6 +36,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.9.0"
+  awesome_dialog:
+    dependency: "direct main"
+    description:
+      name: awesome_dialog
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.0.2"
   bip39:
     dependency: "direct main"
     description:
@@ -478,6 +485,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.2.1"
+  rive:
+    dependency: transitive
+    description:
+      name: rive
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.9.1"
   salomon_bottom_bar:
     dependency: "direct main"
     description:

@@ -48,6 +48,7 @@ dependencies:
   salomon_bottom_bar:
   intl:
   appinio_swiper:
+  awesome_dialog: 
 
 dev_dependencies:
   flutter_test:
