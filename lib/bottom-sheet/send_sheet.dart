@@ -272,7 +272,7 @@ class _SendSheetState extends State<SendSheet> {
       EasyLoading.show(status: 'send...');
       final transaction = await sui.transferSui(
           addressController.text, int.tryParse(amountController.text) ?? 0);
-
+      EasyLoading.dismiss();
       if (transaction != null) {
         AwesomeDialog(
             context: context,
@@ -294,7 +294,6 @@ class _SendSheetState extends State<SendSheet> {
               Get.to(() => const ActivityDetailPage(), arguments: transaction);
             }).show();
         sui.getBalance();
-        EasyLoading.dismiss();
       }
     }
   }
