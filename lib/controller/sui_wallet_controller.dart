@@ -54,17 +54,18 @@ class SuiWalletController extends GetxController {
     return acc;
   }
 
-  get currentWalletNFTs {
-    // TODO
-    // Filter object
+  List<SuiObject> get currentWalletNFTs {
+    final List<SuiObject> nfts = [];
     ownedObjectBatch
         .where((element) => !isCoin((element as SuiObject).type))
         .where((element) =>
             (element as SuiObject).dataType == 'moveObject' &&
             (element).hasPublicTransfer)
         .forEach((element) {
-      print(element);
+      nfts.add(element);
     });
+
+    return nfts;
   }
 
   get transactionsSend {

@@ -163,7 +163,7 @@ class SuiObject {
   final String type;
   final String dataType;
   final bool hasPublicTransfer;
-  final Map fields;
+  final Map<dynamic, dynamic> fields;
   SuiObject(
       {required this.type,
       required this.dataType,

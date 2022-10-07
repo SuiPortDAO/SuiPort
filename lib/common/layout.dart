@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:wallet/api/sui_api.dart';
 import 'package:wallet/main.dart';
+import 'package:wallet/utils/format.dart';
 import '../controller/global_theme_controller.dart';
 
 buildColumnGap(height) {
@@ -137,15 +139,25 @@ class CardButton extends StatelessWidget {
 class NFTCard extends StatelessWidget {
   const NFTCard({
     Key? key,
-    required GlobalThemeController theme,
+    required this.theme,
+    required this.suiObject,
   }) : super(key: key);
+
+  final GlobalThemeController theme;
+  final SuiObject suiObject;
 
   @override
   Widget build(BuildContext context) {
+    String mediaUrl = (suiObject.fields['url'] ?? '');
+    mediaUrl =
+        mediaUrl.replaceFirst(RegExp(r'^ipfs:\/\/'), 'https://ipfs.io/ipfs/');
+    final name = suiObject.fields['name'] ?? '';
+    final objectId = suiObject.fields['id']?['id'] ?? '';
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: theme.primaryColor1,
+        color: theme.primaryColor2,
         boxShadow: [
           BoxShadow(
             color: theme.backgroundColor1.withOpacity(0.4),
@@ -160,42 +172,39 @@ class NFTCard extends StatelessWidget {
         children: [
           Flexible(
             child: Container(
-              decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
+              decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(10),
                     topRight: Radius.circular(10),
                   ),
                   image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(
-                          'https://keepsake.gg/assets/images/item-background/front-page-nft.png'))),
+                      fit: BoxFit.cover, image: NetworkImage(mediaUrl))),
             ),
           ),
           Container(
             padding: const EdgeInsets.all(15),
-            decoration: BoxDecoration(
-              color: theme.primaryColor2,
-              borderRadius: const BorderRadius.only(
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(10),
                 bottomRight: Radius.circular(10),
               ),
             ),
-            child: Row(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                Text(
+                  name,
+                  style: TextStyle(
+                    color: theme.textColor1,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                ),
+                buildColumnGap(8.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      'Example NFT',
-                      style: TextStyle(
-                        color: theme.textColor1,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
-                    ),
-                    buildColumnGap(8.0),
                     Text(
                       'Object Id',
                       style: TextStyle(
@@ -203,8 +212,15 @@ class NFTCard extends StatelessWidget {
                         fontSize: 15,
                       ),
                     ),
+                    Text(
+                      addressFuzzy(objectId),
+                      style: TextStyle(
+                        color: theme.textColor2,
+                        fontSize: 15,
+                      ),
+                    ),
                   ],
-                ),
+                )
               ],
             ),
           ),

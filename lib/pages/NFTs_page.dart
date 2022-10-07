@@ -27,7 +27,14 @@ class _NftsPageState extends State<NFTsPage> {
   @override
   void initState() {
     super.initState();
-    sui.currentWalletNFTs;
+    addCards();
+  }
+
+  addCards() {
+    final currentWalletNFTsCard = sui.currentWalletNFTs
+        .map((e) => NFTCard(theme: theme, suiObject: e))
+        .toList();
+    cards.addAll(currentWalletNFTsCard);
   }
 
   @override
@@ -41,6 +48,9 @@ class _NftsPageState extends State<NFTsPage> {
             controller: controller,
             cards: cards,
             onSwipe: _swipe,
+            onEnd: () {
+              addCards();
+            },
             padding: const EdgeInsets.only(
               left: 25,
               right: 25,
