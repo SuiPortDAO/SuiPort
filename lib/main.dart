@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:wallet/controller/global_layout_controller.dart';
 import 'package:wallet/controller/global_theme_controller.dart';
@@ -13,6 +14,7 @@ GlobalLayoutController layout = GlobalLayoutController();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await suiWallet.loadStorageWallet();
   runApp(GetMaterialApp(
     debugShowCheckedModeBanner: false,
