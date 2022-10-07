@@ -10,6 +10,6 @@ final txKindToTxt = {
   'ChangeEpoch': 'Change epoch',
 };
 
-bool isCoin(obj) {
-  return (obj?.data?.type as String).startsWith(coinType);
+bool isCoin(type) {
+  return type.startsWith(coinType);
 }

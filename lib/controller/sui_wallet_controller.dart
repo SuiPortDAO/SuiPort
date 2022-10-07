@@ -8,9 +8,9 @@ import '../utils/sui_sdk.dart';
 class SuiWalletController extends GetxController {
   var safeStorage = SafeStorage();
   var wallets = [].obs;
-  var currentWalletBalance = {}.obs;
   var currentWalletAddress = ''.obs;
   var transactions = [].obs;
+  var ownedObjectBatch = [].obs;
 
   SuiWallet? get currentWallet {
     if (hasWallet) {
@@ -23,7 +23,7 @@ class SuiWalletController extends GetxController {
     return wallets.isNotEmpty;
   }
 
-  get suiBalnce {
+  get suiBalance {
     return currentWalletBalance[coinSuiType] ?? 0;
   }
 
@@ -33,6 +33,38 @@ class SuiWalletController extends GetxController {
 
   get currentWalletAddressStandard {
     return addressStandard(currentWalletAddress.value);
+  }
+
+  get currentWalletBalance {
+    final Map<String, num> acc = {};
+    ownedObjectBatch
+        .where((element) => isCoin((element as SuiObject).type))
+        .forEach((element) {
+      final coinType = coinTypeArgRegExp.firstMatch(element.type)?[1];
+
+      if (coinType is String) {
+        if (acc[coinType] is num) {
+          acc[coinType] = acc[coinType]! + (element.fields['balance'] ?? 0);
+        } else {
+          acc[coinType] = (element.fields['balance'] ?? 0);
+        }
+      }
+    });
+
+    return acc;
+  }
+
+  get currentWalletNFTs {
+    // TODO
+    // Filter object
+    ownedObjectBatch
+        .where((element) => !isCoin((element as SuiObject).type))
+        .where((element) =>
+            (element as SuiObject).dataType == 'moveObject' &&
+            (element).hasPublicTransfer)
+        .forEach((element) {
+      print(element);
+    });
   }
 
   get transactionsSend {
@@ -72,37 +104,25 @@ class SuiWalletController extends GetxController {
     }
   }
 
-  getBalance() async {
+  getOwnedObjectBatch() async {
     if (hasWallet) {
-      final Map<String, num> acc = {};
-      final suiObjectInfo = await currentWallet?._suiApi
+      final objectIds = await currentWallet?._suiApi
           ?.getObjectsOwnedByAddress(currentWalletAddress.string);
-      final objectIds = suiObjectInfo
-          ?.map((suiObjectInfo) => suiObjectInfo.objectId)
-          .toList();
-      (await currentWallet?._suiApi?.getObjectBatch(objectIds))
-          ?.where((element) => isCoin(element))
-          .forEach((element) {
-        final coinType =
-            coinTypeArgRegExp.firstMatch(element?.data?.type ?? '')?[1];
-
-        if (coinType is String) {
-          if (acc[coinType] is num) {
-            acc[coinType] =
-                acc[coinType]! + (element?.data?.fields?.balance ?? 0);
-          } else {
-            acc[coinType] = (element?.data?.fields?.balance ?? 0);
-          }
-        }
-      });
-
-      currentWalletBalance.value = acc;
+      return await currentWallet?._suiApi?.getObjectBatch(objectIds);
     }
+    return [];
+  }
+
+  getBalance() async {
+    ownedObjectBatch.value = await getOwnedObjectBatch();
+  }
+
+  getNFTs() async {
+    ownedObjectBatch.value = await getOwnedObjectBatch();
   }
 
   getTransactionsForAddress() async {
     if (hasWallet) {
-      print('update transactions');
       transactions.value = await currentWallet?._suiApi
               ?.getTransactionsForAddress(currentWalletAddress.string) ??
           [];

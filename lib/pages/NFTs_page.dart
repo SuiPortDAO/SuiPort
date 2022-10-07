@@ -5,6 +5,7 @@ import 'package:wallet/common/layout.dart';
 
 import '../common/svg.dart';
 import '../controller/global_theme_controller.dart';
+import '../controller/sui_wallet_controller.dart';
 
 class NFTsPage extends StatefulWidget {
   const NFTsPage({
@@ -21,11 +22,12 @@ class _NftsPageState extends State<NFTsPage> {
   List<NFTCard> cards = [];
   int currentIndex = 0;
   GlobalThemeController theme = Get.find();
+  SuiWalletController sui = Get.find();
 
   @override
   void initState() {
-    cards.addAll([NFTCard(theme: theme), NFTCard(theme: theme)]);
     super.initState();
+    sui.currentWalletNFTs;
   }
 
   @override
@@ -56,7 +58,7 @@ class _NftsPageState extends State<NFTsPage> {
                 child: CardButton(
                   theme: theme,
                   text: 'Send NFT',
-                  icon: svgSend(),
+                  icon: svgSend(height: 18),
                   backgroundColor:
                       MaterialStateProperty.all(theme.primaryColor1),
                 ),
@@ -67,7 +69,7 @@ class _NftsPageState extends State<NFTsPage> {
                 child: CardButton(
                   theme: theme,
                   text: 'View Image',
-                  icon: svgReceive(),
+                  icon: svgView(),
                   backgroundColor:
                       MaterialStateProperty.all(theme.primaryColor2),
                 ),

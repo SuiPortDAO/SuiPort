@@ -1,38 +1,58 @@
 import 'package:dio/dio.dart';
 import 'package:wallet/api/api_service.dart';
-import 'package:wallet/api/get_txn_digests_response.dart';
-import 'package:wallet/api/sui_object_info_response.dart';
 import 'package:wallet/api/sui_request.dart';
 import 'package:wallet/common/toast.dart';
 import 'package:wallet/utils/format.dart';
 import 'package:wallet/utils/json.dart';
 
-import 'get_object_data_response.dart';
-
 class SuiApi {
   final ApiService _apiService = ApiService('https://fullnode.devnet.sui.io/');
 
-  Future<List<SuiObjectInfo>?> getObjectsOwnedByAddress(String address) async {
+  Future<List<String>> getObjectsOwnedByAddress(String address) async {
+    List<String> objectIds = [];
     final response = await _apiService.post('/',
         SuiRequest(method: 'sui_getObjectsOwnedByAddress', params: [address]));
-    return SuiObjectInfoReponse.fromJson(response.data).result;
+    final result =
+        JSON.resolve(json: response.data, path: 'result', defaultValue: []);
+    for (var element in result) {
+      if (element['objectId'] is String) {
+        objectIds.add(element['objectId']);
+      }
+    }
+    return objectIds;
   }
 
-  Future<List<SuiObject?>> getObjectBatch(List<String?>? objectIds) async {
+  Future<List<SuiObject>> getObjectBatch(List<String?>? objectIds) async {
     try {
+      List<SuiObject> ownedSuiObject = [];
       final response = await _apiService.post(
           '/',
           objectIds
               ?.map((String? objectId) =>
                   SuiRequest(method: 'sui_getObject', params: [objectId ?? '']))
               .toList());
-      if (response.data is Map && response.data['error']) {
+      if (response.data is! List && response.data['error'] is Map) {
         return [];
       }
-      return response.data
-          .map((e) => GetObjectDataResponse.fromJson(e).result?.details)
-          .cast<SuiObject>()
-          .toList();
+      response.data.forEach((json) {
+        final type = JSON.resolve(
+            json: json, path: 'result.details.data.type', defaultValue: '');
+        final dataType = JSON.resolve(
+            json: json, path: 'result.details.data.dataType', defaultValue: '');
+        final hasPublicTransfer = JSON.resolve(
+            json: json,
+            path: 'result.details.data.has_public_transfer',
+            defaultValue: false);
+        final fields = JSON.resolve(
+            json: json, path: 'result.details.data.fields', defaultValue: {});
+
+        ownedSuiObject.add(SuiObject(
+            type: type,
+            dataType: dataType,
+            hasPublicTransfer: hasPublicTransfer,
+            fields: fields));
+      });
+      return ownedSuiObject;
     } on DioError catch (e) {
       showError('Network Error', (e.response ?? e.message).toString());
       return [];
@@ -52,12 +72,15 @@ class SuiApi {
       SuiRequest(method: 'sui_getTransactionsFromAddress', params: [address])
     ]))
         .data
-        .forEach((e) => GetTxnDigestsResponse.fromJson(e).result?.forEach((e) {
-              if (!seq.contains(e[0])) {
-                digests.add(e[1]);
-                seq.add(e[0]);
-              }
-            }));
+        .forEach((json) {
+      final result = JSON.resolve(json: json, path: 'result', defaultValue: []);
+      for (var e in result) {
+        if (!seq.contains(e[0])) {
+          digests.add(e[1]);
+          seq.add(e[0]);
+        }
+      }
+    });
 
     if (digests.isEmpty) {
       return tansactions;
@@ -134,6 +157,18 @@ class SuiApi {
     tansactions.sort((a, b) => b.timestampMs - a.timestampMs);
     return tansactions;
   }
+}
+
+class SuiObject {
+  final String type;
+  final String dataType;
+  final bool hasPublicTransfer;
+  final Map fields;
+  SuiObject(
+      {required this.type,
+      required this.dataType,
+      required this.hasPublicTransfer,
+      required this.fields});
 }
 
 class SuiTansaction {

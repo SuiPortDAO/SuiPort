@@ -176,3 +176,13 @@ svgTReceive({double? height, double? width, Color? color}) {
     color: color ?? Colors.white,
   );
 }
+
+svgView({double? height, double? width, Color? color}) {
+  return SvgPicture.asset(
+    'assets/view.svg',
+    semanticsLabel: 'View',
+    height: height ?? 24,
+    width: width ?? 24,
+    color: color ?? Colors.white,
+  );
+}

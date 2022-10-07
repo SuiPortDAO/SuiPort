@@ -32,7 +32,7 @@ class CoinsPage extends StatelessWidget {
             textBaseline: TextBaseline.alphabetic,
             children: [
               Obx(() => Text(
-                    moneyformat(sui.suiBalnce),
+                    moneyformat(sui.suiBalance),
                     style: TextStyle(
                         color: theme.textColor1,
                         fontSize: 28,
