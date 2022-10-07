@@ -47,6 +47,7 @@ dependencies:
   flutter_svg:
   salomon_bottom_bar:
   intl:
+  appinio_swiper:
 
 dev_dependencies:
   flutter_test:

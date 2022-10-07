@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
+import 'package:wallet/main.dart';
 import '../controller/global_theme_controller.dart';
 
 buildColumnGap(height) {
@@ -131,5 +131,85 @@ class CardButton extends StatelessWidget {
             ],
           ),
         ));
+  }
+}
+
+class NFTCard extends StatelessWidget {
+  const NFTCard({
+    Key? key,
+    required GlobalThemeController theme,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: theme.primaryColor1,
+        boxShadow: [
+          BoxShadow(
+            color: theme.backgroundColor1.withOpacity(0.4),
+            spreadRadius: 3,
+            blurRadius: 7,
+            offset: const Offset(0, 3),
+          )
+        ],
+      ),
+      alignment: Alignment.center,
+      child: Column(
+        children: [
+          Flexible(
+            child: Container(
+              decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    topRight: Radius.circular(10),
+                  ),
+                  image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(
+                          'https://keepsake.gg/assets/images/item-background/front-page-nft.png'))),
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.all(15),
+            decoration: BoxDecoration(
+              color: theme.primaryColor2,
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(10),
+                bottomRight: Radius.circular(10),
+              ),
+            ),
+            child: Row(
+              children: [
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Example NFT',
+                      style: TextStyle(
+                        color: theme.textColor1,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
+                    buildColumnGap(8.0),
+                    Text(
+                      'Object Id',
+                      style: TextStyle(
+                        color: theme.textColor2,
+                        fontSize: 15,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
