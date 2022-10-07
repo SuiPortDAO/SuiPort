@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:wallet/common/toast.dart';
 import 'package:wallet/utils/format.dart';
 
 import '../common/layout.dart';
 import '../common/svg.dart';
 import '../controller/global_theme_controller.dart';
 import '../controller/sui_wallet_controller.dart';
+import '../pages/activity_detail_page.dart';
 import '../utils/sui_sdk.dart';
 
 class SendSheet extends StatefulWidget {
@@ -260,14 +262,20 @@ class _SendSheetState extends State<SendSheet> {
     );
   }
 
-  sendCoinsNow() {
+  sendCoinsNow() async {
     if (!isChanged) {
       return;
     }
-
     if (validateAmount(amountController.text) == null &&
         validateSuiAddress(addressController.text) == null) {
-      print('Go....');
+      final transaction = await sui.transferSui(
+          addressController.text, int.tryParse(amountController.text) ?? 0);
+
+      if (transaction != null) {
+        sui.getBalance();
+        Get.back();
+        Get.to(() => const ActivityDetailPage(), arguments: transaction);
+      }
     }
   }
 }

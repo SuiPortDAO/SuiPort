@@ -7,6 +7,8 @@ import 'package:wallet/utils/json.dart';
 
 class SuiApi {
   final ApiService _apiService = ApiService('https://fullnode.devnet.sui.io/');
+  final ApiService _gatewayService =
+      ApiService('https://gateway.devnet.sui.io/');
 
   Future<List<String>> getObjectsOwnedByAddress(String address) async {
     List<String> objectIds = [];
@@ -62,6 +64,65 @@ class SuiApi {
     }
   }
 
+  // TODO
+  // flat
+  // how to performance
+  SuiTansaction transformTransaction(json, address) {
+    final gasSummary = JSON
+        .resolve(json: json, path: 'result.effects.gasUsed', defaultValue: {});
+    final from = JSON.resolve(
+        json: json, path: 'result.certificate.data.sender', defaultValue: '');
+    final error = JSON.resolve(
+        json: json, path: 'result.effects.status.error', defaultValue: '');
+    final status = JSON.resolve(
+        json: json, path: 'result.effects.status.status', defaultValue: '');
+    final timestampMs =
+        JSON.resolve(json: json, path: 'result.timestamp_ms', defaultValue: 0);
+    final txGas = (gasSummary['computationCost'] ?? 0) +
+        (gasSummary['storageCost'] ?? 0) -
+        (gasSummary['storageRebate'] ?? 0);
+
+    final transactionDigest = JSON.resolve(
+        json: json,
+        path: 'result.certificate.transactionDigest',
+        defaultValue: '');
+
+    final txn = JSON.resolve(
+        json: json,
+        path: 'result.certificate.data.transactions.0',
+        defaultValue: {});
+
+    var txKind = '';
+    var amount = 0;
+    var recipient = '';
+    if (txn.keys.first is String) {
+      txKind = txn.keys.first;
+      amount = JSON.resolve(
+          json: json,
+          path: 'result.certificate.data.transactions.0.$txKind.amount',
+          defaultValue: 0);
+
+      recipient = JSON.resolve(
+          json: json,
+          path: 'result.certificate.data.transactions.0.$txKind.recipient',
+          defaultValue: '');
+    }
+
+    return SuiTansaction(
+      // seq: seq[digests.indexOf(transactionDigest)],
+      txId: transactionDigest,
+      status: status,
+      txGas: txGas,
+      kind: txKind,
+      from: from,
+      error: error,
+      timestampMs: timestampMs,
+      isSender: addressStandard(from) == addressStandard(address),
+      amount: amount,
+      recipient: recipient,
+    );
+  }
+
   Future<List<SuiTansaction>> getTransactionsForAddress(address) async {
     final List<SuiTansaction> tansactions = [];
     final List<String> digests = [];
@@ -94,68 +155,23 @@ class SuiApi {
                 .toList()))
         .data
         .forEach((json) {
-      // flat
-      // how to performance
-      // TODO
-      // filter
-      final gasSummary = JSON.resolve(
-          json: json, path: 'result.effects.gasUsed', defaultValue: {});
-      final from = JSON.resolve(
-          json: json, path: 'result.certificate.data.sender', defaultValue: '');
-      final error = JSON.resolve(
-          json: json, path: 'result.effects.status.error', defaultValue: '');
-      final status = JSON.resolve(
-          json: json, path: 'result.effects.status.status', defaultValue: '');
-      final timestampMs = JSON.resolve(
-          json: json, path: 'result.timestamp_ms', defaultValue: 0);
-      final txGas = (gasSummary['computationCost'] ?? 0) +
-          (gasSummary['storageCost'] ?? 0) -
-          (gasSummary['storageRebate'] ?? 0);
-
-      final transactionDigest = JSON.resolve(
-          json: json,
-          path: 'result.certificate.transactionDigest',
-          defaultValue: '');
-
-      final txn = JSON.resolve(
-          json: json,
-          path: 'result.certificate.data.transactions.0',
-          defaultValue: {});
-
-      var txKind = '';
-      var amount = 0;
-      var recipient = '';
-      if (txn.keys.first is String) {
-        txKind = txn.keys.first;
-        amount = JSON.resolve(
-            json: json,
-            path: 'result.certificate.data.transactions.0.$txKind.amount',
-            defaultValue: 0);
-
-        recipient = JSON.resolve(
-            json: json,
-            path: 'result.certificate.data.transactions.0.$txKind.recipient',
-            defaultValue: '');
-      }
-
-      tansactions.add(
-        SuiTansaction(
-          seq: seq[digests.indexOf(transactionDigest)],
-          txId: transactionDigest,
-          status: status,
-          txGas: txGas,
-          kind: txKind,
-          from: from,
-          error: error,
-          timestampMs: timestampMs,
-          isSender: addressStandard(from) == addressStandard(address),
-          amount: amount,
-          recipient: recipient,
-        ),
-      );
+      tansactions.add(transformTransaction(json, address));
     });
     tansactions.sort((a, b) => b.timestampMs - a.timestampMs);
     return tansactions;
+  }
+
+  transferSui(List<dynamic> params) async {
+    return await _gatewayService.post(
+        '/', SuiRequest(method: 'sui_transferSui', params: params));
+  }
+
+  Future<SuiTansaction> suiExecuteTransaction(
+      String address, List<dynamic> params) async {
+    final response = await _gatewayService.post(
+        '/', SuiRequest(method: 'sui_executeTransaction', params: params));
+
+    return transformTransaction(response.data, address);
   }
 }
 
@@ -172,7 +188,7 @@ class SuiObject {
 }
 
 class SuiTansaction {
-  final num seq;
+  // final num seq;
   final String txId;
   final String status;
   final num txGas;
@@ -184,7 +200,8 @@ class SuiTansaction {
   final num amount;
   final String recipient;
   SuiTansaction(
-      {required this.seq,
+      {
+      // required this.seq,
       required this.txId,
       required this.status,
       required this.txGas,

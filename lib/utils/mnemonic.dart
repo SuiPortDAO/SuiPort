@@ -7,7 +7,7 @@ String generateMnemonic() {
   return bip39.generateMnemonic();
 }
 
-getKeypairFromMnemonics(String mnemonic) async {
+Future<SimpleKeyPair> getKeypairFromMnemonics(String mnemonic) async {
   final seed = bip39.mnemonicToSeed(mnemonic).sublist(0, 32);
   final algorithm = Ed25519();
   final keyPair = await algorithm.newKeyPairFromSeed(seed);

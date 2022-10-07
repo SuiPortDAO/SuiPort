@@ -7,7 +7,7 @@ class SuiRequest {
   String id = '1';
   String jsonrpc = '2.0';
   String method = '';
-  List<String> params = [];
+  List<dynamic> params = [];
 
   SuiRequest({required this.method, required this.params});
 

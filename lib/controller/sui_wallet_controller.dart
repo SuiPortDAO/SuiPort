@@ -1,8 +1,14 @@
+import 'dart:convert';
+
+import 'package:cryptography/cryptography.dart';
 import 'package:wallet/api/sui_api.dart';
+import 'package:wallet/common/toast.dart';
+import 'package:wallet/main.dart';
 import 'package:wallet/utils/format.dart';
 import 'package:wallet/utils/mnemonic.dart';
 import 'package:wallet/utils/safe_storage.dart';
 import 'package:get/get.dart';
+import '../utils/json.dart';
 import '../utils/sui_sdk.dart';
 
 class SuiWalletController extends GetxController {
@@ -128,6 +134,56 @@ class SuiWalletController extends GetxController {
       transactions.value = await currentWallet?._suiApi
               ?.getTransactionsForAddress(currentWalletAddress.string) ??
           [];
+    }
+  }
+
+  Future<SuiTansaction?> transferSui(String recipient, int amount) async {
+    try {
+      // sui coins
+      final coins = ownedObjectBatch
+          .where((element) =>
+              isCoin((element as SuiObject).type) && isSuiCoin(element.type))
+          .toList();
+
+      // syncAccountState
+      // TODO
+      if (coins.isEmpty) {
+        return null;
+      }
+
+      final coin = prepareCoinWithEnoughBalance(
+              coins as List<SuiObject>, amount + defaultGasBudgetForMerge)
+          as SuiObject;
+
+      final transferSuiTransaction = [
+        suiWallet.currentWalletAddress.value,
+        getCoinId(coin),
+        defaultGasBudgetForTransferSUI,
+        recipient,
+        amount
+      ];
+
+      final response =
+          await currentWallet?._suiApi?.transferSui(transferSuiTransaction);
+      final txByte = JSON.resolve(
+          json: response.data, path: 'result.txBytes', defaultValue: '');
+      final keypair =
+          await getKeypairFromMnemonics(currentWallet?._mnemonic ?? '');
+
+      final algorithm = Ed25519();
+      keypair.extractPrivateKeyBytes();
+      final signature = base64.encode(
+          (await algorithm.sign(base64.decode(txByte), keyPair: keypair))
+              .bytes);
+      final publicKey = base64.encode((await keypair.extractPublicKey()).bytes);
+
+      final executeSuiTransaction = [txByte, "ED25519", signature, publicKey];
+
+      return await currentWallet?._suiApi?.suiExecuteTransaction(
+          suiWallet.currentWalletAddress.value, executeSuiTransaction);
+    } catch (e) {
+      showError('transferSui', e.toString());
+      return null;
     }
   }
 }
