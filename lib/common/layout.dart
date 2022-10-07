@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:wallet/api/sui_api.dart';
-import 'package:wallet/main.dart';
 import 'package:wallet/utils/format.dart';
 import '../controller/global_theme_controller.dart';
 
@@ -21,6 +20,7 @@ class ListItem extends StatelessWidget {
       required this.leftEnd,
       required this.rightStart,
       required this.rightEnd,
+      this.tags,
       this.onTap})
       : super(key: key);
 
@@ -30,6 +30,7 @@ class ListItem extends StatelessWidget {
   final String leftEnd;
   final String rightStart;
   final String rightEnd;
+  final List<String>? tags;
   final Function()? onTap;
 
   @override
@@ -53,12 +54,38 @@ class ListItem extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          leftStart,
-                          style: TextStyle(
-                              color: theme.textColor1,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold),
+                        Row(
+                          children: [
+                            Text(
+                              leftStart,
+                              style: TextStyle(
+                                  color: theme.textColor1,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            ...tags?.map((tag) => Row(
+                                      children: [
+                                        buildRowGap(8.0),
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 4, vertical: 2),
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(4.0),
+                                              border: Border.all(
+                                                  color: theme.primaryColor1,
+                                                  width: 1)),
+                                          child: Text(
+                                            tag,
+                                            style: TextStyle(
+                                                color: theme.textColor1,
+                                                fontSize: 12),
+                                          ),
+                                        ),
+                                      ],
+                                    )) ??
+                                []
+                          ],
                         ),
                         Text(
                           rightStart,
@@ -66,22 +93,20 @@ class ListItem extends StatelessWidget {
                         )
                       ],
                     ),
-                    Column(
+                    buildColumnGap(6.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              leftEnd,
-                              style: TextStyle(color: theme.textColor2),
-                            ),
-                            Text(
-                              rightEnd,
-                              style: TextStyle(color: theme.textColor2),
-                            )
-                          ],
+                        Expanded(
+                          child: Text(
+                            leftEnd,
+                            style: TextStyle(color: theme.textColor2),
+                          ),
                         ),
-                        Row()
+                        Text(
+                          rightEnd,
+                          style: TextStyle(color: theme.textColor2),
+                        )
                       ],
                     ),
                   ],
