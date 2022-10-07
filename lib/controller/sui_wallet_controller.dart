@@ -11,6 +11,7 @@ class SuiWalletController extends GetxController {
   var currentWalletAddress = ''.obs;
   var transactions = [].obs;
   var ownedObjectBatch = [].obs;
+  var suiGasDefault = 100;
 
   SuiWallet? get currentWallet {
     if (hasWallet) {

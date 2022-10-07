@@ -126,13 +126,17 @@ class CardButton extends StatelessWidget {
       required this.theme,
       required this.text,
       required this.icon,
-      required this.backgroundColor})
+      required this.backgroundColor,
+      this.center,
+      this.onPressed})
       : super(key: key);
 
   final GlobalThemeController theme;
   final String text;
   final Widget icon;
   final MaterialStateProperty<Color> backgroundColor;
+  final void Function()? onPressed;
+  final bool? center;
 
   @override
   Widget build(BuildContext context) {
@@ -144,16 +148,21 @@ class CardButton extends StatelessWidget {
             )),
             foregroundColor: MaterialStateProperty.all(theme.textColor1),
             backgroundColor: backgroundColor),
-        onPressed: () {},
+        onPressed: () {
+          onPressed?.call();
+        },
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 18),
+          padding: const EdgeInsets.symmetric(vertical: 16),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: center ?? false
+                ? MainAxisAlignment.center
+                : MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 text,
                 style: TextStyle(color: theme.textColor1, fontSize: 16),
               ),
+              buildRowGap(8.0),
               icon
             ],
           ),

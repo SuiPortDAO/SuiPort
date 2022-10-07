@@ -22,4 +22,11 @@ class GlobalThemeController extends GetxController {
     left: 60,
     right: 60,
   );
+
+  var buttonPaddingSmall = const EdgeInsets.only(
+    top: 6,
+    bottom: 6,
+    left: 12,
+    right: 12,
+  );
 }

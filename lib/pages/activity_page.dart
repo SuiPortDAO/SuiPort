@@ -28,7 +28,7 @@ class ActivityPage extends StatelessWidget {
                       ? theme.sendColor
                       : theme.receiveColor;
                   String leftEndText = '';
-                  String rightStartText = moneyformat(transaction.amount);
+                  String rightStartText = moneyFormat(transaction.amount);
                   String rightEndText = 'SUI';
 
                   if (transaction.isSender) {

@@ -186,3 +186,13 @@ svgView({double? height, double? width, Color? color}) {
     color: color ?? Colors.white,
   );
 }
+
+svgClose({double? height, double? width, Color? color}) {
+  return SvgPicture.asset(
+    'assets/close.svg',
+    semanticsLabel: 'Close',
+    height: height ?? 24,
+    width: width ?? 24,
+    color: color ?? Colors.white,
+  );
+}

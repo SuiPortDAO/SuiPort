@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:wallet/bottom-sheet/send_sheet.dart';
 import 'package:wallet/common/layout.dart';
 import 'package:wallet/common/svg.dart';
 import 'package:wallet/main.dart';
@@ -32,7 +33,7 @@ class CoinsPage extends StatelessWidget {
             textBaseline: TextBaseline.alphabetic,
             children: [
               Obx(() => Text(
-                    moneyformat(sui.suiBalance),
+                    moneyFormat(sui.suiBalance),
                     style: TextStyle(
                         color: theme.textColor1,
                         fontSize: 28,
@@ -79,12 +80,15 @@ class CoinsPage extends StatelessWidget {
               Expanded(
                 flex: 1,
                 child: CardButton(
-                  theme: theme,
-                  text: 'Send',
-                  icon: svgSend(),
-                  backgroundColor:
-                      MaterialStateProperty.all(theme.primaryColor1),
-                ),
+                    theme: theme,
+                    text: 'Send',
+                    icon: svgSend(),
+                    backgroundColor:
+                        MaterialStateProperty.all(theme.primaryColor1),
+                    onPressed: () {
+                      Get.bottomSheet(const SendSheet(),
+                          isScrollControlled: true);
+                    }),
               ),
               buildRowGap(8.0),
               Expanded(

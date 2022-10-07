@@ -64,7 +64,7 @@ class ActivityDetailPage extends StatelessWidget {
                   children: [
                     buildColumnGap(48.0),
                     Text(
-                      '${moneyformat(translation.amount)} SUI',
+                      '${moneyFormat(translation.amount)} SUI',
                       style: TextStyle(
                         color: theme.textColor1,
                         fontSize: 32,
@@ -78,9 +78,9 @@ class ActivityDetailPage extends StatelessWidget {
                     buildColumnGap(12.0),
                     detailItem('From', addressFuzzy(translation.from)),
                     detailItem(
-                        'Gas Fee', '${moneyformat(translation.txGas)} SUI'),
+                        'Gas Fee', '${moneyFormat(translation.txGas)} SUI'),
                     detailItem('Total Amount',
-                        '${moneyformat(translation.amount)} SUI'),
+                        '${moneyFormat(translation.amount)} SUI'),
                     detailItem(
                         'Date',
                         dateTimeFormat(DateTime.fromMillisecondsSinceEpoch(

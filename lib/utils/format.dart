@@ -25,7 +25,7 @@ addressStandard(String address) {
   return '0x$address';
 }
 
-moneyformat(money) {
+moneyFormat(money) {
   return oCcy.format(money);
 }
 

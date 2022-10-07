@@ -11,7 +11,7 @@ class ImportMnemonic extends StatelessWidget {
   Widget build(BuildContext context) {
     GlobalThemeController theme = Get.find();
     SuiWalletController suiWallet = Get.find();
-    var mnemonicController = TextEditingController();
+    final mnemonicController = TextEditingController();
     return Scaffold(
         backgroundColor: theme.backgroundColor1,
         body: Padding(

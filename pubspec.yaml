@@ -99,6 +99,7 @@ flutter:
     - t_send.svg
     - t_receive.svg
     - view.svg
+    - close.svg
 
     - usdt.png
 
