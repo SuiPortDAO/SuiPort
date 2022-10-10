@@ -4,8 +4,8 @@ SuiPort is an open source mobile wallet focusing on sui chain. The project is ba
 <img src="https://github.com/SuiPortDAO/wallet/blob/main/screenshots/home.png?raw=true" width="200" alt="SuiPort"/>
 
 
-## When to publish
-We will launch the Android beta version as soon as possible, you can also clone the project.
+## Releases
+https://github.com/SuiPortDAO/SuiPort/releases
 
 ## Development
 ```bash
