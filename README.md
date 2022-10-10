@@ -34,7 +34,7 @@ We provide a simpler access method. The interface is fully compatible with the o
 If you find any problems in use, you can submit an issue.
 
 ## Contribute
-You can also be a wallet builder.
+We are grateful to the community for contributing bugfixes and improvements.
 
 ## Contact us
 - discord: https://discord.gg/3FjbGbPbs7
