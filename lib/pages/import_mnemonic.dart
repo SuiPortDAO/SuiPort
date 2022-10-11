@@ -54,7 +54,7 @@ class ImportMnemonic extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () async {
                     await suiWallet.addWallet(mnemonicController.text);
-                    Get.offAll(const HomePage());
+                    Get.offAll(HomePage());
                   },
                   style: ButtonStyle(
                       foregroundColor:

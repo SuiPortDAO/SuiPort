@@ -137,6 +137,12 @@ class SuiWalletController extends GetxController {
     }
   }
 
+  deleteWallet() async{
+    if (hasWallet) {
+      safeStorage.deleteAll();
+    }
+  }
+
   Future<SuiTansaction?> transferSui(String recipient, int amount) async {
     try {
       // sui coins

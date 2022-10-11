@@ -33,7 +33,7 @@ class App extends StatelessWidget {
     Get.put(theme);
     Get.put(layout);
     if (suiWallet.hasWallet) {
-      return const HomePage();
+      return HomePage();
     } else {
       return const WelcomePage();
     }

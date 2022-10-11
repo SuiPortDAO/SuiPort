@@ -9,11 +9,12 @@ import 'package:wallet/pages/NFTs_page.dart';
 import 'package:wallet/pages/activity_page.dart';
 import 'package:wallet/pages/apps_dart.dart';
 import 'package:wallet/pages/coins_page.dart';
+import 'package:wallet/pages/my_drawer.dart';
 import '../controller/global_theme_controller.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
-
+  // const HomePage({super.key});
+ final _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(context) {
     GlobalThemeController theme = Get.find();
@@ -22,12 +23,15 @@ class HomePage extends StatelessWidget {
     const appBarLabels = ['SuiPort', 'NFTs', 'Apps', 'Activity'];
     sui.getTransactionsForAddress();
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         backgroundColor: theme.backgroundColor1,
         elevation: 0.0,
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              _scaffoldKey.currentState!.openEndDrawer();
+            },
             icon: svgMenu(),
           )
         ],
@@ -86,6 +90,7 @@ class HomePage extends StatelessWidget {
             ],
             onTap: (i) => layout.setHomeIndex(i),
           )),
+      endDrawer: MyDrawer(),
     );
   }
 }

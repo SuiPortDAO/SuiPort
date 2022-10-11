@@ -84,7 +84,7 @@ class BackupWalletPage extends StatelessWidget {
             ElevatedButton(
               onPressed: () async {
                 await suiWallet.addWallet(Get.arguments);
-                Get.offAll(const HomePage());
+                Get.offAll(HomePage());
               },
               style: ButtonStyle(
                   foregroundColor: MaterialStateProperty.all(theme.textColor1),
