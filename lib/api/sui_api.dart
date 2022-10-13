@@ -161,9 +161,14 @@ class SuiApi {
     return tansactions;
   }
 
-  transferSui(List<dynamic> params) async {
+  suiTransferSui(List<dynamic> params) async {
     return await _gatewayService.post(
         '/', SuiRequest(method: 'sui_transferSui', params: params));
+  }
+
+  suiMoveCall(List<dynamic> params) async {
+    return await _gatewayService.post(
+        '/', SuiRequest(method: 'sui_moveCall', params: params));
   }
 
   Future<SuiTansaction> suiExecuteTransaction(

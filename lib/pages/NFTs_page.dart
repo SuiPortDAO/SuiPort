@@ -1,5 +1,6 @@
 import 'package:appinio_swiper/appinio_swiper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:wallet/common/layout.dart';
 
@@ -20,7 +21,6 @@ class _NftsPageState extends State<NFTsPage> {
   final AppinioSwiperController controller = AppinioSwiperController();
 
   List<NFTCard> cards = [];
-  int currentIndex = 0;
   GlobalThemeController theme = Get.find();
   SuiWalletController sui = Get.find();
 
@@ -37,8 +37,49 @@ class _NftsPageState extends State<NFTsPage> {
     cards.addAll(currentWalletNFTsCard);
   }
 
+  mintDemoNFT() async {
+    const name = 'Example SuiPort NFT';
+    const desc = 'An example NFT created by demo Dapp';
+    const url =
+        'ipfs://bafkreibngqhl3gaa7daob4i2vccziay2jjlp435cf66vhono7nrvww53ty';
+    EasyLoading.show(status: 'mint...', maskType: EasyLoadingMaskType.black);
+    await sui.executeMoveCall(MoveCallTransaction(
+      packageObjectId: '0x2',
+      module: 'devnet_nft',
+      function: 'mint',
+      typeArguments: [],
+      arguments: [name, desc, url],
+      gasPayment: null,
+      gasBudget: 10000,
+    ));
+    await sui.getBalance();
+    await sui.getTransactionsForAddress();
+    setState(() {
+      addCards();
+    });
+    EasyLoading.dismiss();
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (cards.isEmpty) {
+      return Center(
+        child: SizedBox(
+          height: 60,
+          width: 240,
+          child: CardButton(
+            theme: theme,
+            text: 'Mint An Demo NFT',
+            icon: svgSend(height: 18),
+            backgroundColor: MaterialStateProperty.all(theme.primaryColor1),
+            onPressed: () {
+              mintDemoNFT();
+            },
+          ),
+        ),
+      );
+    }
+
     return Column(
       children: [
         SizedBox(
@@ -86,7 +127,7 @@ class _NftsPageState extends State<NFTsPage> {
               )
             ],
           ),
-        )
+        ),
       ],
     );
   }

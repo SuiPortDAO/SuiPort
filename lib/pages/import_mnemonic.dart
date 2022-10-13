@@ -28,7 +28,7 @@ class ImportMnemonic extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '助记词',
+                          'mnemonics',
                           style: TextStyle(
                             color: theme.textColor1,
                           ),

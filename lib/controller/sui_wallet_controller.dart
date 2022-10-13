@@ -137,13 +137,36 @@ class SuiWalletController extends GetxController {
     }
   }
 
-  deleteWallet() async{
+  deleteWallet() async {
     if (hasWallet) {
       safeStorage.deleteAll();
     }
   }
 
-  Future<SuiTansaction?> transferSui(String recipient, int amount) async {
+  executeMoveCall(MoveCallTransaction transaction) async {
+    try {
+      final response = await currentWallet?._suiApi?.suiMoveCall([
+        suiWallet.currentWalletAddress.value,
+        transaction.packageObjectId,
+        transaction.module,
+        transaction.function,
+        transaction.typeArguments,
+        transaction.arguments,
+        transaction.gasPayment,
+        transaction.gasBudget
+      ]);
+      final txByte = JSON.resolve(
+          json: response.data, path: 'result.txBytes', defaultValue: '');
+
+      return await currentWallet?._suiApi?.suiExecuteTransaction(
+          suiWallet.currentWalletAddress.value, await signTxBytes(txByte));
+    } catch (e) {
+      showError('transferSui', e.toString());
+      return null;
+    }
+  }
+
+  transferSui(String recipient, int amount) async {
     try {
       // sui coins
       final coins = ownedObjectBatch
@@ -170,27 +193,28 @@ class SuiWalletController extends GetxController {
       ];
 
       final response =
-          await currentWallet?._suiApi?.transferSui(transferSuiTransaction);
+          await currentWallet?._suiApi?.suiTransferSui(transferSuiTransaction);
       final txByte = JSON.resolve(
           json: response.data, path: 'result.txBytes', defaultValue: '');
-      final keypair =
-          await getKeypairFromMnemonics(currentWallet?._mnemonic ?? '');
-
-      final algorithm = Ed25519();
-      keypair.extractPrivateKeyBytes();
-      final signature = base64.encode(
-          (await algorithm.sign(base64.decode(txByte), keyPair: keypair))
-              .bytes);
-      final publicKey = base64.encode((await keypair.extractPublicKey()).bytes);
-
-      final executeSuiTransaction = [txByte, "ED25519", signature, publicKey];
-
       return await currentWallet?._suiApi?.suiExecuteTransaction(
-          suiWallet.currentWalletAddress.value, executeSuiTransaction);
+          suiWallet.currentWalletAddress.value, await signTxBytes(txByte));
     } catch (e) {
       showError('transferSui', e.toString());
       return null;
     }
+  }
+
+  signTxBytes(txByte) async {
+    final keypair =
+        await getKeypairFromMnemonics(currentWallet?._mnemonic ?? '');
+
+    final algorithm = Ed25519();
+    keypair.extractPrivateKeyBytes();
+    final signature = base64.encode(
+        (await algorithm.sign(base64.decode(txByte), keyPair: keypair)).bytes);
+    final publicKey = base64.encode((await keypair.extractPublicKey()).bytes);
+
+    return [txByte, "ED25519", signature, publicKey];
   }
 }
 
@@ -201,4 +225,22 @@ class SuiWallet {
     _mnemonic = mnemonic;
     _suiApi = suiApi;
   }
+}
+
+class MoveCallTransaction {
+  final String packageObjectId;
+  final String module;
+  final String function;
+  final List<String> typeArguments;
+  final List<String> arguments;
+  final String? gasPayment;
+  final num gasBudget;
+  MoveCallTransaction(
+      {required this.packageObjectId,
+      required this.module,
+      required this.function,
+      required this.typeArguments,
+      required this.arguments,
+      this.gasPayment,
+      required this.gasBudget});
 }

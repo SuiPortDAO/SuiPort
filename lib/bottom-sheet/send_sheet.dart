@@ -269,10 +269,10 @@ class _SendSheetState extends State<SendSheet> {
     }
     if (validateAmount(amountController.text) == null &&
         validateSuiAddress(addressController.text) == null) {
-      EasyLoading.show(status: 'send...');
+      EasyLoading.show(status: 'send...', maskType: EasyLoadingMaskType.black);
       final transaction = await sui.transferSui(
           addressController.text, int.tryParse(amountController.text) ?? 0);
-      EasyLoading.dismiss();
+
       if (transaction != null) {
         AwesomeDialog(
             context: context,
@@ -293,8 +293,9 @@ class _SendSheetState extends State<SendSheet> {
               Get.back();
               Get.to(() => const ActivityDetailPage(), arguments: transaction);
             }).show();
-        sui.getBalance();
-        sui.getTransactionsForAddress();
+        await sui.getBalance();
+        await sui.getTransactionsForAddress();
+        EasyLoading.dismiss();
       }
     }
   }
