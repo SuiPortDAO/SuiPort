@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:wallet/main.dart';
 // ignore: unused_import
 import 'package:url_launcher/url_launcher.dart';
@@ -52,7 +53,7 @@ class MyDrawer extends StatelessWidget {
             // trailing: Icon(Icons.favorite, color: Colors.black12, size: 22.0),
             onTap: () => {
               suiWallet.deleteWallet(),
-              Navigator.push(context,MaterialPageRoute(builder:(BuildContext context)=> const WelcomePage()))
+              Get.to(const WelcomePage()),
             },
           ),
         ],
