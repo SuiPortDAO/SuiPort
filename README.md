@@ -1,4 +1,4 @@
-# SuiPort🔥🔥🔥
+# <img height="38" align="center" src="https://github.com/SuiPortDAO/wallet/blob/main/assets/logo.svg?raw=true"> SuiPortWallet
 SuiPort is an open source mobile wallet focusing on sui chain. The project is based on flutter to support Android and iOS and will also support browser plugin in the future.
 
 <img src="https://github.com/SuiPortDAO/wallet/blob/main/screenshots/home.png?raw=true" width="200" alt="SuiPort"/>
@@ -17,18 +17,12 @@ flutter run
 - Show transfer history
 - Owned NFTs
 - Transaction (SUI)
+- Mint Demo NFT
 
 ## To Do
 - Dapp access
 - Send NFT
 - Transaction (Others)
-
-## Dapp access
-We provide a simpler access method. The interface is fully compatible with the official wallet of sui. If you already support the official wallet, you can quickly access SuiPort by adding the following script. At the same time, you also need to make your Dapp compatible with mobile.
-
-```html
- <script src='https://cdn.jsdelivr.net/gh/SuiPortDAO/wallet/shared/js/sdk/suiport.min.js' />
-```
 
 ## Bug report
 If you find any problems in use, you can submit an issue.
