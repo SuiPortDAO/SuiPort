@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
-import 'package:wallet/api/api_service.dart';
-import 'package:wallet/api/sui_request.dart';
 import 'package:wallet/common/toast.dart';
 import 'package:wallet/utils/format.dart';
 import 'package:wallet/utils/json.dart';
+import 'package:wallet/wallet/sui/api_service.dart';
+import 'package:wallet/wallet/sui/sui_request.dart';
 
 class SuiApi {
   final ApiService _apiService = ApiService('https://fullnode.devnet.sui.io/');
@@ -64,9 +64,6 @@ class SuiApi {
     }
   }
 
-  // TODO
-  // flat
-  // how to performance
   SuiTansaction transformTransaction(json, address) {
     final gasSummary = JSON
         .resolve(json: json, path: 'result.effects.gasUsed', defaultValue: {});

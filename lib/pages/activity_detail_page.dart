@@ -1,13 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:wallet/api/sui_api.dart';
 import 'package:wallet/common/layout.dart';
 import 'package:wallet/utils/format.dart';
 
 import '../common/svg.dart';
 import '../controller/global_theme_controller.dart';
-import '../controller/sui_wallet_controller.dart';
+import '../wallet/sui/sui_api.dart';
 
 class ActivityDetailPage extends StatelessWidget {
   const ActivityDetailPage({super.key});

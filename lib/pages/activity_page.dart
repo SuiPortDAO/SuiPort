@@ -4,9 +4,9 @@ import 'package:wallet/common/layout.dart';
 import 'package:wallet/common/svg.dart';
 import 'package:wallet/pages/activity_detail_page.dart';
 import 'package:wallet/utils/format.dart';
-import '../api/sui_api.dart';
 import '../controller/global_theme_controller.dart';
 import '../controller/sui_wallet_controller.dart';
+import '../wallet/sui/sui_api.dart';
 
 class ActivityPage extends StatelessWidget {
   const ActivityPage({super.key});
@@ -14,7 +14,6 @@ class ActivityPage extends StatelessWidget {
   Widget build(BuildContext context) {
     SuiWalletController sui = Get.find();
     GlobalThemeController theme = Get.find();
-    sui.getTransactionsForAddress();
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
       child: Column(

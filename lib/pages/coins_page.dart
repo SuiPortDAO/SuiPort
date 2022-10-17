@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:wallet/bottom-sheet/send_sheet.dart';
 import 'package:wallet/common/layout.dart';
 import 'package:wallet/common/svg.dart';
-import 'package:wallet/main.dart';
 import 'package:wallet/utils/format.dart';
 
 import '../controller/global_theme_controller.dart';
@@ -16,7 +15,6 @@ class CoinsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     GlobalThemeController theme = Get.find();
     SuiWalletController sui = Get.find();
-    sui.getBalance();
     return Padding(
       padding: const EdgeInsets.all(18),
       child: Column(
@@ -33,7 +31,7 @@ class CoinsPage extends StatelessWidget {
             textBaseline: TextBaseline.alphabetic,
             children: [
               Obx(() => Text(
-                    moneyFormat(sui.suiBalance),
+                    moneyFormat(sui.primaryCoinBalance.value),
                     style: TextStyle(
                         color: theme.textColor1,
                         fontSize: 28,
@@ -48,10 +46,10 @@ class CoinsPage extends StatelessWidget {
           ),
           Row(
             children: [
-              Text(
-                '${suiWallet.currentWalletAddressFuzzyed}',
-                style: TextStyle(color: theme.textColor2),
-              ),
+              Obx(() => Text(
+                    '${sui.publicAddressFuzzyed}',
+                    style: TextStyle(color: theme.textColor2),
+                  )),
               IconButton(
                   onPressed: () {
                     Get.showSnackbar(GetSnackBar(
@@ -69,7 +67,7 @@ class CoinsPage extends StatelessWidget {
                       animationDuration: 0.5.seconds,
                     ));
                     Clipboard.setData(
-                        ClipboardData(text: sui.currentWalletAddressStandard));
+                        ClipboardData(text: sui.publicAddress.value));
                   },
                   icon: svgCopy())
             ],

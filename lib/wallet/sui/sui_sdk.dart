@@ -1,5 +1,4 @@
-import '../api/sui_api.dart';
-import 'json.dart';
+import 'sui_api.dart';
 
 const coinType = '0x2::coin::Coin';
 const coinSuiType = '0x2::sui::SUI';

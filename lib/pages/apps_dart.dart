@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 
 import '../common/layout.dart';
 import '../controller/global_theme_controller.dart';
-import '../controller/sui_wallet_controller.dart';
 
 class AppItem {
   final String icon;
@@ -21,9 +20,7 @@ class AppsPage extends StatelessWidget {
   const AppsPage({super.key});
   @override
   Widget build(BuildContext context) {
-    SuiWalletController sui = Get.find();
     GlobalThemeController theme = Get.find();
-    sui.getTransactionsForAddress();
 
     final List<AppItem> apps = [
       AppItem(

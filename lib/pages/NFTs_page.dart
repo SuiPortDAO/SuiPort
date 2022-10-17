@@ -7,6 +7,7 @@ import 'package:wallet/common/layout.dart';
 import '../common/svg.dart';
 import '../controller/global_theme_controller.dart';
 import '../controller/sui_wallet_controller.dart';
+import '../wallet/sui/sui_wallet.dart';
 
 class NFTsPage extends StatefulWidget {
   const NFTsPage({
@@ -31,9 +32,8 @@ class _NftsPageState extends State<NFTsPage> {
   }
 
   addCards() {
-    final currentWalletNFTsCard = sui.currentWalletNFTs
-        .map((e) => NFTCard(theme: theme, suiObject: e))
-        .toList();
+    final currentWalletNFTsCard =
+        sui.NFTs.map((e) => NFTCard(theme: theme, suiObject: e)).toList();
     cards.addAll(currentWalletNFTsCard);
   }
 
@@ -52,8 +52,6 @@ class _NftsPageState extends State<NFTsPage> {
       gasPayment: null,
       gasBudget: 10000,
     ));
-    await sui.getBalance();
-    await sui.getTransactionsForAddress();
     setState(() {
       addCards();
     });

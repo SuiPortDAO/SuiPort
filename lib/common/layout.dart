@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:wallet/api/sui_api.dart';
 import 'package:wallet/utils/format.dart';
 import '../controller/global_theme_controller.dart';
+import '../wallet/sui/sui_api.dart';
 
 buildColumnGap(height) {
   return Container(height: height);

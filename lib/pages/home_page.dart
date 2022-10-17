@@ -14,14 +14,13 @@ import '../controller/global_theme_controller.dart';
 
 class HomePage extends StatelessWidget {
   // const HomePage({super.key});
- final _scaffoldKey = GlobalKey<ScaffoldState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(context) {
     GlobalThemeController theme = Get.find();
     SuiWalletController sui = Get.find();
     GlobalLayoutController layout = Get.find();
     const appBarLabels = ['SuiPort', 'NFTs', 'Apps', 'Activity'];
-    sui.getTransactionsForAddress();
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(

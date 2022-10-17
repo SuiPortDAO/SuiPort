@@ -9,8 +9,7 @@ import '../common/layout.dart';
 import '../common/svg.dart';
 import '../controller/global_theme_controller.dart';
 import '../controller/sui_wallet_controller.dart';
-import '../pages/activity_detail_page.dart';
-import '../utils/sui_sdk.dart';
+import '../wallet/sui/sui_sdk.dart';
 
 class SendSheet extends StatefulWidget {
   const SendSheet({Key? key}) : super(key: key);
@@ -61,8 +60,9 @@ class _SendSheetState extends State<SendSheet> {
       return 'Amount is a required field';
     }
 
-    if (val.isNotEmpty && int.parse(val) > sui.suiBalance - sui.suiGasDefault) {
-      return 'Amount must be less than ${moneyFormat(sui.suiBalance - sui.suiGasDefault)} SUI';
+    if (val.isNotEmpty &&
+        int.parse(val) > sui.primaryCoinBalance.value - sui.gasDefault.value) {
+      return 'Amount must be less than ${moneyFormat(sui.primaryCoinBalance.value - sui.gasDefault.value)} SUI';
     }
 
     if (val.isNotEmpty && int.parse(val) == 0) {
@@ -205,7 +205,7 @@ class _SendSheetState extends State<SendSheet> {
                             ),
                           ),
                           Text(
-                            '${moneyFormat(sui.suiGasDefault)} SUI',
+                            '${moneyFormat(sui.gasDefault.value)} SUI',
                             style: TextStyle(
                               color: theme.textColor1,
                             ),
@@ -223,7 +223,7 @@ class _SendSheetState extends State<SendSheet> {
                             ),
                           ),
                           Text(
-                            '${moneyFormat((int.tryParse(amountController.text) ?? 0) + sui.suiGasDefault)} SUI',
+                            '${moneyFormat((int.tryParse(amountController.text) ?? 0) + sui.gasDefault.value)} SUI',
                             style: TextStyle(
                               color: theme.textColor1,
                             ),
@@ -270,31 +270,24 @@ class _SendSheetState extends State<SendSheet> {
     if (validateAmount(amountController.text) == null &&
         validateSuiAddress(addressController.text) == null) {
       EasyLoading.show(status: 'send...', maskType: EasyLoadingMaskType.black);
-      final transaction = await sui.transferSui(
-          addressController.text, int.tryParse(amountController.text) ?? 0);
+      final ok = await sui.transfer(
+          addressController.text, int.tryParse(amountController.text) ?? 0, '');
       EasyLoading.dismiss();
-      if (transaction != null) {
+      if (ok) {
         AwesomeDialog(
             context: context,
             dialogType: DialogType.success,
-            desc: 'Send ${moneyFormat(transaction.amount)}',
+            desc:
+                'Send ${moneyFormat(int.tryParse(amountController.text) ?? 0)}',
             descTextStyle: TextStyle(color: theme.textColor2, fontSize: 16),
             title: 'Transaction Success',
             titleTextStyle: TextStyle(color: theme.textColor1, fontSize: 20),
             dialogBackgroundColor: theme.primaryColor2,
-            btnCancelOnPress: () {
-              Get.back();
-            },
-            btnCancelText: 'Back',
-            btnCancelColor: theme.primaryColor2,
-            btnOkText: 'Detail',
+            btnOkText: 'OK',
             btnOkColor: theme.primaryColor1,
             btnOkOnPress: () {
               Get.back();
-              Get.to(() => const ActivityDetailPage(), arguments: transaction);
             }).show();
-        await sui.getBalance();
-        await sui.getTransactionsForAddress();
       }
     }
   }
