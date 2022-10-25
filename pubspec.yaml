@@ -51,6 +51,8 @@ dependencies:
   appinio_swiper:
   awesome_dialog: 
   flutter_easyloading:
+  ed25519_hd_key:
+  hex:
 
 dev_dependencies:
   flutter_test:

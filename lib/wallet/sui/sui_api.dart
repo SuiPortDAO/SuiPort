@@ -7,8 +7,6 @@ import 'package:wallet/wallet/sui/sui_request.dart';
 
 class SuiApi {
   final ApiService _apiService = ApiService('https://fullnode.devnet.sui.io/');
-  final ApiService _gatewayService =
-      ApiService('https://gateway.devnet.sui.io/');
 
   Future<List<String>> getObjectsOwnedByAddress(String address) async {
     List<String> objectIds = [];
@@ -159,18 +157,18 @@ class SuiApi {
   }
 
   suiTransferSui(List<dynamic> params) async {
-    return await _gatewayService.post(
+    return await _apiService.post(
         '/', SuiRequest(method: 'sui_transferSui', params: params));
   }
 
   suiMoveCall(List<dynamic> params) async {
-    return await _gatewayService.post(
+    return await _apiService.post(
         '/', SuiRequest(method: 'sui_moveCall', params: params));
   }
 
   Future<SuiTansaction> suiExecuteTransaction(
       String address, List<dynamic> params) async {
-    final response = await _gatewayService.post(
+    final response = await _apiService.post(
         '/', SuiRequest(method: 'sui_executeTransaction', params: params));
 
     return transformTransaction(response.data, address);
