@@ -7,6 +7,10 @@ SuiPort is an open source mobile wallet focusing on sui chain. The project is ba
 ## Releases
 https://github.com/SuiPortDAO/SuiPort/releases
 
+## Server
+We need to make full use of the official sdk of sui. The server project built with node is as follows.
+https://github.com/SuiPortDAO/SuiPortServer
+
 ## Development
 ```bash
 flutter run
